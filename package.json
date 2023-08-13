@@ -1,0 +1,22 @@
+{
+  "name": "forkify",
+  "version": "1.0.0",
+  "description": "Recipe application",
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build index.html"
+  },
+  "repository": {
+    "type": "module",
+    "url": "git+https://github.com/SladjanaDejanovic/Forkify.git"
+  },
+  "author": "Sladjana Dejanovic",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/SladjanaDejanovic/Forkify/issues"
+  },
+  "homepage": "https://github.com/SladjanaDejanovic/Forkify#readme",
+  "devDependencies": {
+    "sass": "^1.65.1"
+  }
+}
