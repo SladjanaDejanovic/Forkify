@@ -1,6 +1,6 @@
 // Importing icons
 // in parcel we can import more than just js files, including images
-import icons from '../img/icons.svg'; // for any static file (non-programming file), which is vids, pics, sounds - we have to put url: before path (this is not working now))
+import icons from '../img/icons.svg';
 
 // Pollyfiling
 import 'core-js/stable';
@@ -19,6 +19,7 @@ const timeout = function (s) {
 // https://forkify-api.herokuapp.com/v2
 
 ///////////////////////////////////////////////
+
 const renderSpinner = function (parentEl) {
   const markup = `
   <div class="spinner">
