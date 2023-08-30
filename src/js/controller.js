@@ -167,8 +167,8 @@ const showRecipe = async function () {
     alert(err);
   }
 };
-// showRecipe();
 
+/////
 // Events
 
 // window.addEventListener('hashchange', showRecipe); // listening for changing of hash (when clicked on hyperlink to recipe, its id is shown in address bar)
