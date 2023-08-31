@@ -37,15 +37,13 @@ const showRecipe = async function () {
     const id = window.location.hash.slice(1);
     console.log(id);
 
-    // guard clause if id is not present in address bar
-    if (!id) return;
+    if (!id) return; // guard clause if id is not present in address bar
 
     // Loading recipe
     renderSpinner(recipeContainer);
 
     const res = await fetch(
       `https://forkify-api.herokuapp.com/api/v2/recipes/${id}`
-      // 'https://forkify-api.herokuapp.com/api/v2/recipes/5ed6604591c37cdc054bcac4'
     );
     const data = await res.json();
 
