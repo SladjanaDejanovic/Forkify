@@ -135,6 +135,3 @@ class RecipeView {
   }
 }
 export default new RecipeView();
-
-// window.addEventListener('hashchange', controlRecipes); // listening for changing of hash (when clicked on hyperlink to recipe, its id is shown in address bar)
-// window.addEventListener('load', controlRecipes); // when page is complited loading - if hash is not changed, when we put entire address in address bar
