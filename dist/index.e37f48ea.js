@@ -2694,6 +2694,7 @@ var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 class View {
     _data;
     render(data) {
+        if (!data || Array.isArray(data) && data.length === 0) return this.renderError();
         this._data = data;
         const markup = this._generateMarkup();
         this._clear();
@@ -2712,7 +2713,7 @@ class View {
         this._clear();
         this._parentElement.insertAdjacentHTML("afterbegin", markup);
     };
-    renderError(message = this_errorMessage) {
+    renderError(message = this._errorMessage) {
         const markup = `<div class="error">
       <div>
         <svg>
@@ -2721,7 +2722,7 @@ class View {
       </div>
       <p>${message}</p>
     </div>`;
-        this_clear();
+        this._clear();
         this._parentElement.insertAdjacentHTML("afterbegin", markup);
     }
     renderMessage(message = this._message) {
@@ -2733,7 +2734,7 @@ class View {
       </div>
       <p>${message}</p>
     </div>`;
-        this_clear();
+        this._clear();
         this._parentElement.insertAdjacentHTML("afterbegin", markup);
     }
     addHandlerRender(handler) {
@@ -3067,6 +3068,8 @@ var _iconsSvg = require("../../img/icons.svg");
 var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 class ResultsView extends (0, _viewDefault.default) {
     _parentElement = document.querySelector(".results");
+    _errorMessage = "No recepies found for your query! Please try again ;)";
+    _message = "";
     _generateMarkup() {
         console.log(this._data);
         return this._data.map(this._generateMarkupPreview).join("");

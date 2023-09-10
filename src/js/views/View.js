@@ -2,7 +2,11 @@ import icons from '../../img/icons.svg';
 
 export default class View {
   _data;
+
   render(data) {
+    if (!data || (Array.isArray(data) && data.length === 0))
+      return this.renderError();
+
     this._data = data;
     const markup = this._generateMarkup();
     this._clear();
@@ -24,7 +28,7 @@ export default class View {
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   };
 
-  renderError(message = this_errorMessage) {
+  renderError(message = this._errorMessage) {
     const markup = `<div class="error">
       <div>
         <svg>
@@ -33,7 +37,7 @@ export default class View {
       </div>
       <p>${message}</p>
     </div>`;
-    this_clear();
+    this._clear();
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
 
@@ -46,7 +50,7 @@ export default class View {
       </div>
       <p>${message}</p>
     </div>`;
-    this_clear();
+    this._clear();
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
 
