@@ -7,9 +7,9 @@ import resultsView from './views/resultsView.js';
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
 
-if (module.hot) {
-  module.hot.accept();
-} // this is comming from parcel, it's not js
+// if (module.hot) {
+//   module.hot.accept();
+// } // this is comming from parcel, it's not js
 
 // const recipeContainer = document.querySelector('.recipe');
 
@@ -49,7 +49,8 @@ const controlSearchResults = async function () {
     await model.loadSearchResults(query);
 
     // 3) Render results
-    resultsView.render(model.state.search.results);
+    // resultsView.render(model.state.search.results);
+    resultsView.render(model.getSearchResultsPage());
   } catch (err) {
     console.log(err);
   }
