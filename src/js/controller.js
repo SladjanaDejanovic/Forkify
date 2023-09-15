@@ -12,8 +12,6 @@ import 'regenerator-runtime/runtime';
 //   module.hot.accept();
 // } // this is comming from parcel, it's not js
 
-// const recipeContainer = document.querySelector('.recipe');
-
 // https://forkify-api.herokuapp.com/v2
 
 ///////////////////////////////////////////////
@@ -50,7 +48,6 @@ const controlSearchResults = async function () {
     await model.loadSearchResults(query);
 
     // 3) Render results
-    // resultsView.render(model.state.search.results);
     resultsView.render(model.getSearchResultsPage());
 
     // 4) Render initial pagination buttons
