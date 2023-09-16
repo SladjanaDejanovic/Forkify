@@ -595,8 +595,6 @@ var _runtime = require("regenerator-runtime/runtime");
 // if (module.hot) {
 //   module.hot.accept();
 // } // this is comming from parcel, it's not js
-// const recipeContainer = document.querySelector('.recipe');
-// https://forkify-api.herokuapp.com/v2
 ///////////////////////////////////////////////
 const controlRecipes = async function() {
     try {
@@ -622,7 +620,6 @@ const controlSearchResults = async function() {
         // 2) Load search results
         await _modelJs.loadSearchResults(query);
         // 3) Render results
-        // resultsView.render(model.state.search.results);
         (0, _resultsViewJsDefault.default).render(_modelJs.getSearchResultsPage());
         // 4) Render initial pagination buttons
         (0, _paginationViewJsDefault.default).render(_modelJs.state.search);
@@ -630,8 +627,6 @@ const controlSearchResults = async function() {
         console.log(err);
     }
 };
-/////
-// Events
 const controlPagintaion = function(goToPage) {
     console.log(goToPage);
     // 1) Render NEW results

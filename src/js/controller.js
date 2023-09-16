@@ -12,8 +12,6 @@ import 'regenerator-runtime/runtime';
 //   module.hot.accept();
 // } // this is comming from parcel, it's not js
 
-// https://forkify-api.herokuapp.com/v2
-
 ///////////////////////////////////////////////
 
 const controlRecipes = async function () {
@@ -56,9 +54,6 @@ const controlSearchResults = async function () {
     console.log(err);
   }
 };
-
-/////
-// Events
 
 const controlPagintaion = function (goToPage) {
   console.log(goToPage);
