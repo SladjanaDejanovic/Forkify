@@ -607,6 +607,7 @@ const controlRecipes = async function() {
         await _modelJs.loadRecipe(id);
         // Rendering recipe
         (0, _recipeViewJsDefault.default).render(_modelJs.state.recipe);
+    // controlServings();
     } catch (err) {
         (0, _recipeViewJsDefault.default).renderError();
     }
@@ -626,6 +627,12 @@ const controlSearchResults = async function() {
     } catch (err) {
         console.log(err);
     }
+};
+const controlServings = function() {
+    // Update the recipe servings (in state)
+    _modelJs.updateServings(10);
+    // Update the recipe view
+    (0, _recipeViewJsDefault.default).render(_modelJs.state.recipe);
 };
 const controlPagintaion = function(goToPage) {
     console.log(goToPage);
@@ -1893,6 +1900,7 @@ parcelHelpers.export(exports, "state", ()=>state);
 parcelHelpers.export(exports, "loadRecipe", ()=>loadRecipe);
 parcelHelpers.export(exports, "loadSearchResults", ()=>loadSearchResults);
 parcelHelpers.export(exports, "getSearchResultsPage", ()=>getSearchResultsPage);
+parcelHelpers.export(exports, "updateServings", ()=>updateServings);
 var _regeneratorRuntime = require("regenerator-runtime");
 var _configJs = require("./config.js");
 var _helpersJs = require("./helpers.js");
@@ -1949,6 +1957,13 @@ const getSearchResultsPage = function(page = state.search.page) {
     const start = (page - 1) * state.search.resultsPerPage; // 0 - for example of we requested page 1: 1 - 1 is 0, and 0 * 10 is 0, so from that position in array of results
     const end = page * state.search.resultsPerPage; // 9
     return state.search.results.slice(start, end);
+};
+const updateServings = function(newServings) {
+    state.recipe.ingredients.array.forEach((ing)=>{
+        ing.quantity = ing.quantity * newServings / state.recipe.servings;
+    // newQt = oldQt * newServings / oldServings
+    });
+    state.recipe.servings = newServings;
 };
 
 },{"regenerator-runtime":"dXNgZ","./config.js":"k5Hzs","./helpers.js":"hGI1E","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"dXNgZ":[function(require,module,exports) {
