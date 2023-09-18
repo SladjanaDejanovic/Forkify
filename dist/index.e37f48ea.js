@@ -579,7 +579,7 @@ var _webImmediateJs = require("core-js/modules/web.immediate.js"); /*
  Publisher-Subscriber Design pattern - design patterns in programming are standard solutions to certain kinds of problems.
 So in the publisher-Subscriber pattern we have a publisher which is some code that knows when to react. And in this case, that's going to be the addHandlerRender function because it will contain the addEventListener method, it will know when to react to the event.Subscriber is code that actually wants to react, code that should actually be executed when the event happens,in this case that is the controlRecipes function
 
-Solution is that we can now subscribe to the publisher by passing into subscriber function as an argument. that means that as soon as the program loads, the init function is called which in turn immediately calls the addHandlerRender function from the view (bc yhe controller imports both view and model). as we call addHendlerRender, we pass in our controlRecipes function as an argument, essentially subscribing controlRecipes to addHandlerRender.
+Solution is that we can now subscribe to the publisher by passing into subscriber function as an argument. that means that as soon as the program loads, the init function is called which in turn immediately calls the addHandlerRender function from the view (bc the controller imports both view and model). as we call addHendlerRender, we pass in our controlRecipes function as an argument, essentially subscribing controlRecipes to addHandlerRender.
 And so at this point, the two functions are basically finally connected. And so now addHandlerRender listens for events using the addEventListener method as always. And then as soon as the event actually happens, the controlRecipes function will be called as the callback function of addEventListener (as soon as the publisher publishes an event the subscriber will get called)
 */ 
 var _modelJs = require("./model.js");
@@ -607,7 +607,7 @@ const controlRecipes = async function() {
         await _modelJs.loadRecipe(id);
         // Rendering recipe
         (0, _recipeViewJsDefault.default).render(_modelJs.state.recipe);
-    // controlServings();
+    // controlServings(5);
     } catch (err) {
         (0, _recipeViewJsDefault.default).renderError();
     }
@@ -628,12 +628,6 @@ const controlSearchResults = async function() {
         console.log(err);
     }
 };
-const controlServings = function() {
-    // Update the recipe servings (in state)
-    _modelJs.updateServings(10);
-    // Update the recipe view
-    (0, _recipeViewJsDefault.default).render(_modelJs.state.recipe);
-};
 const controlPagintaion = function(goToPage) {
     console.log(goToPage);
     // 1) Render NEW results
@@ -641,8 +635,15 @@ const controlPagintaion = function(goToPage) {
     // 2) Render NEW pagination buttons
     (0, _paginationViewJsDefault.default).render(_modelJs.state.search);
 };
+const controlServings = function() {
+    // Update the recipe servings (in state)
+    _modelJs.updateServings(10);
+    // Update the recipe view
+    (0, _recipeViewJsDefault.default).render(_modelJs.state.recipe);
+};
 const init = function() {
     (0, _recipeViewJsDefault.default).addHandlerRender(controlRecipes);
+    (0, _recipeViewJsDefault.default).addHandlerUpdateServings(controlServings);
     (0, _searchViewJsDefault.default).addHandlerSearch(controlSearchResults);
     (0, _paginationViewJsDefault.default).addHandlerClick(controlPagintaion);
 };
@@ -2631,6 +2632,13 @@ class RecipeView extends (0, _viewDefault.default) {
     _parentElement = document.querySelector(".recipe");
     _errorMessage = "We could not find that recipe. Please try another one!";
     _message = "";
+    addHandlerUpdateServings(handler) {
+        this._parentElement.addEventListener("click", function(e) {
+            const btn = e.target.closest(".btn--tiny");
+            if (!btn) return;
+            console.log(btn);
+        });
+    }
     _generateMarkup() {
         return `
     <figure class="recipe__fig">

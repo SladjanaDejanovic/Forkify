@@ -30,7 +30,7 @@ const controlRecipes = async function () {
     // Rendering recipe
     recipeView.render(model.state.recipe);
 
-    // controlServings();
+    // controlServings(5);
   } catch (err) {
     recipeView.renderError();
   }
@@ -57,14 +57,6 @@ const controlSearchResults = async function () {
   }
 };
 
-const controlServings = function () {
-  // Update the recipe servings (in state)
-  model.updateServings(10);
-
-  // Update the recipe view
-  recipeView.render(model.state.recipe);
-};
-
 const controlPagintaion = function (goToPage) {
   console.log(goToPage);
   // 1) Render NEW results
@@ -74,8 +66,17 @@ const controlPagintaion = function (goToPage) {
   paginationView.render(model.state.search);
 };
 
+const controlServings = function () {
+  // Update the recipe servings (in state)
+  model.updateServings(10);
+
+  // Update the recipe view
+  recipeView.render(model.state.recipe);
+};
+
 const init = function () {
   recipeView.addHandlerRender(controlRecipes);
+  recipeView.addHandlerUpdateServings(controlServings);
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(controlPagintaion);
 };
@@ -86,6 +87,6 @@ init();
  Publisher-Subscriber Design pattern - design patterns in programming are standard solutions to certain kinds of problems.
 So in the publisher-Subscriber pattern we have a publisher which is some code that knows when to react. And in this case, that's going to be the addHandlerRender function because it will contain the addEventListener method, it will know when to react to the event.Subscriber is code that actually wants to react, code that should actually be executed when the event happens,in this case that is the controlRecipes function
 
-Solution is that we can now subscribe to the publisher by passing into subscriber function as an argument. that means that as soon as the program loads, the init function is called which in turn immediately calls the addHandlerRender function from the view (bc yhe controller imports both view and model). as we call addHendlerRender, we pass in our controlRecipes function as an argument, essentially subscribing controlRecipes to addHandlerRender.
+Solution is that we can now subscribe to the publisher by passing into subscriber function as an argument. that means that as soon as the program loads, the init function is called which in turn immediately calls the addHandlerRender function from the view (bc the controller imports both view and model). as we call addHendlerRender, we pass in our controlRecipes function as an argument, essentially subscribing controlRecipes to addHandlerRender.
 And so at this point, the two functions are basically finally connected. And so now addHandlerRender listens for events using the addEventListener method as always. And then as soon as the event actually happens, the controlRecipes function will be called as the callback function of addEventListener (as soon as the publisher publishes an event the subscriber will get called)
 */
