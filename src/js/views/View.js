@@ -13,6 +13,18 @@ export default class View {
     this._parentElement.insertAdjacentHTML('afterbegin', markup);
   }
 
+  update(data) {
+    if (!data || (Array.isArray(data) && data.length === 0))
+      return this.renderError();
+
+    this._data = data;
+    const newMarkup = this._generateMarkup();
+    // comparing old DOM element to new markup, and changing only whats been updated, without rerendering entire recipe
+    const newDOM = document.createRange().createContextualFragment(newMarkup); // passing in string of html, and this method will convert it in DOM object, virtual DOM that it's not on the page but lives in our memory
+    const newElements = Array.from(newDOM.querySelectorAll('*'));
+    const curElements = Array.from(this._parentElement.querySelectorAll('*'));
+  }
+
   _clear() {
     this._parentElement.innerHTML = '';
   }

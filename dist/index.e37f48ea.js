@@ -607,8 +607,6 @@ const controlRecipes = async function() {
         await _modelJs.loadRecipe(id);
         // Rendering recipe
         (0, _recipeViewJsDefault.default).render(_modelJs.state.recipe);
-    // TEST
-    // controlServings();
     } catch (err) {
         (0, _recipeViewJsDefault.default).renderError();
     }
@@ -630,7 +628,6 @@ const controlSearchResults = async function() {
     }
 };
 const controlPagintaion = function(goToPage) {
-    console.log(goToPage);
     // 1) Render NEW results
     (0, _resultsViewJsDefault.default).render(_modelJs.getSearchResultsPage(goToPage));
     // 2) Render NEW pagination buttons
@@ -640,7 +637,8 @@ const controlServings = function(newServings) {
     // Update the recipe servings (in state)
     _modelJs.updateServings(newServings);
     // Update the recipe view
-    (0, _recipeViewJsDefault.default).render(_modelJs.state.recipe);
+    // recipeView.render(model.state.recipe);
+    (0, _recipeViewJsDefault.default).update(_modelJs.state.recipe);
 };
 const init = function() {
     (0, _recipeViewJsDefault.default).addHandlerRender(controlRecipes);
@@ -2637,7 +2635,6 @@ class RecipeView extends (0, _viewDefault.default) {
         this._parentElement.addEventListener("click", function(e) {
             const btn = e.target.closest(".btn--update-servings");
             if (!btn) return;
-            console.log(btn);
             const { updateTo } = btn.dataset;
             if (+updateTo > 0) handler(+updateTo);
         });
@@ -2745,6 +2742,15 @@ class View {
         const markup = this._generateMarkup();
         this._clear();
         this._parentElement.insertAdjacentHTML("afterbegin", markup);
+    }
+    update(data) {
+        if (!data || Array.isArray(data) && data.length === 0) return this.renderError();
+        this._data = data;
+        const newMarkup = this._generateMarkup();
+        // comparing old DOM element to new markup, and changing only whats been updated, without rerendering entire recipe
+        const newDOM = document.createRange().createContextualFragment(newMarkup); // passing in string of html, and this method will convert it in DOM object, virtual DOM that it's not on the page but lives in our memory
+        const newElements = Array.from(newDOM.querySelectorAll("*"));
+        const curElements = Array.from(this._parentElement.querySelectorAll("*"));
     }
     _clear() {
         this._parentElement.innerHTML = "";
