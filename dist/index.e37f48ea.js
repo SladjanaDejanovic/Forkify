@@ -2747,20 +2747,20 @@ class View {
         if (!data || Array.isArray(data) && data.length === 0) return this.renderError();
         this._data = data;
         const newMarkup = this._generateMarkup();
-        // comparing old DOM element to new markup, and changing only whats been updated, without rerendering entire recipe
-        const newDOM = document.createRange().createContextualFragment(newMarkup); // passing in string of html, and this method will convert it in DOM object, virtual DOM that it's not on the page but lives in our memory
+        // comparing old DOM element to new markup, and changing only what's been updated, without rerendering entire recipe
+        const newDOM = document.createRange().createContextualFragment(newMarkup); // passing in string of HTML, and this method will convert it in DOM object, virtual DOM that it's not on the page but lives in our memory
         const newElements = Array.from(newDOM.querySelectorAll("*"));
         const curElements = Array.from(this._parentElement.querySelectorAll("*"));
         newElements.forEach((newEl, i)=>{
             const curEl = curElements[i];
-            // method for comapring available on all nodes- isEqualNode()
+            // method for comparing, available on all nodes- isEqualNode()
             // console.log(curEl, newEl.isEqualNode(curEl));
-            if (!newEl.isEqualNode(curEl) && newEl.firstChild.nodeValue.trim() !== "") {
-                console.log(newEl.firstChild.nodeValue.trim());
-                // replacing only text
-                curEl.textContent = newEl.textContent;
-            // nodeValue() - will be null if node is element, and most other things, but if it is text then we will get content of the text node. so this  newEl.firsChild.nodeValue !== ""   is to check if the dom has text, in this case it is the first child of newEl dom, so its value has to be different than empty string or null, and eliminate white space with trim()
-            }
+            // Updates changed TEXT
+            if (!newEl.isEqualNode(curEl) && newEl.firstChild?.nodeValue.trim() !== "") // console.log(newEl.firstChild.nodeValue.trim());
+            // replacing only text
+            curEl.textContent = newEl.textContent;
+            // Updates changed ATTRIBUTES
+            if (!newEl.isEqualNode(curEl)) console.log(newEl.attributes); // returns all attributes that have been changed
         });
     }
     _clear() {

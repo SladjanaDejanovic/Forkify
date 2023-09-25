@@ -29,14 +29,19 @@ export default class View {
       // method for comparing, available on all nodes- isEqualNode()
       // console.log(curEl, newEl.isEqualNode(curEl));
 
+      // Updates changed TEXT
       if (
         !newEl.isEqualNode(curEl) &&
-        newEl.firstChild.nodeValue.trim() !== ''
+        newEl.firstChild?.nodeValue.trim() !== ''
       ) {
-        console.log(newEl.firstChild.nodeValue.trim());
+        // console.log(newEl.firstChild.nodeValue.trim());
         // replacing only text
         curEl.textContent = newEl.textContent;
         // nodeValue() - will be null if node is element, and most other things, but if it is text then we will get content of the text node. So this  newEl.firsChild.nodeValue !== ""   is to check if the DOM has text, in this case it is the first child of newEl DOM, so its value has to be different than empty string or null; and eliminate white space with trim()
+      }
+      // Updates changed ATTRIBUTES
+      if (!newEl.isEqualNode(curEl)) {
+        console.log(newEl.attributes); // returns all attributes that have been changed
       }
     });
   }
