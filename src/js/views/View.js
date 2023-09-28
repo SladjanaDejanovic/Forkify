@@ -14,9 +14,6 @@ export default class View {
   }
 
   update(data) {
-    if (!data || (Array.isArray(data) && data.length === 0))
-      return this.renderError();
-
     this._data = data;
     const newMarkup = this._generateMarkup();
     // comparing old DOM element to new markup, and changing only what's been updated, without rerendering entire recipe
@@ -41,7 +38,10 @@ export default class View {
 
       // Updates changed ATTRIBUTES
       if (!newEl.isEqualNode(curEl)) {
-        console.log(newEl.attributes); // returns all attributes that have been changed
+        // console.log(newEl.attributes); // returns all attributes that have been changed
+        Array.from(newEl.attributes).forEach(attr => {
+          curEl.setAttribute(attr.name, attr.value);
+        });
       }
     });
   }

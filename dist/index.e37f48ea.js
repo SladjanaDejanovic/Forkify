@@ -579,8 +579,7 @@ var _webImmediateJs = require("core-js/modules/web.immediate.js"); /*
  Publisher-Subscriber Design pattern - design patterns in programming are standard solutions to certain kinds of problems.
 So in the publisher-Subscriber pattern we have a publisher which is some code that knows when to react. And in this case, that's going to be the addHandlerRender function because it will contain the addEventListener method, it will know when to react to the event.Subscriber is code that actually wants to react, code that should actually be executed when the event happens,in this case that is the controlRecipes function
 
-Solution is that we can now subscribe to the publisher by passing into subscriber function as an argument. that means that as soon as the program loads, the init function is called which in turn immediately calls the addHandlerRender function from the view (bc the controller imports both view and model). as we call addHendlerRender, we pass in our controlRecipes function as an argument, essentially subscribing controlRecipes to addHandlerRender.
-And so at this point, the two functions are basically finally connected. And so now addHandlerRender listens for events using the addEventListener method as always. And then as soon as the event actually happens, the controlRecipes function will be called as the callback function of addEventListener (as soon as the publisher publishes an event the subscriber will get called)
+Solution - subscribe to the publisher by passing into subscriber function as an argument. that means that as soon as the program loads, the init function is called which in turn immediately calls the addHandlerRender function from the view (bc the controller imports both view and model). as we call addHendlerRender, we pass in our controlRecipes function as an argument, essentially subscribing controlRecipes to addHandlerRender.And so now addHandlerRender listens for events using the addEventListener method as always. And then as soon as the event actually happens, the controlRecipes function will be called as the callback function of addEventListener (as soon as the publisher publishes an event the subscriber will get called)
 */ 
 var _modelJs = require("./model.js");
 var _recipeViewJs = require("./views/recipeView.js");
@@ -592,17 +591,15 @@ var _resultsViewJsDefault = parcelHelpers.interopDefault(_resultsViewJs);
 var _paginationViewJs = require("./views/paginationView.js");
 var _paginationViewJsDefault = parcelHelpers.interopDefault(_paginationViewJs);
 var _runtime = require("regenerator-runtime/runtime");
-// if (module.hot) {
-//   module.hot.accept();
-// } // this is comming from parcel, it's not js
 ///////////////////////////////////////////////
 const controlRecipes = async function() {
     try {
         // Getting recipe id from hash
         const id = window.location.hash.slice(1);
-        console.log(id);
-        if (!id) return; // guard clause if id is not present in address bar
+        if (!id) return;
         (0, _recipeViewJsDefault.default).renderSpinner();
+        // Update results view to mark selected search result
+        (0, _resultsViewJsDefault.default).update(_modelJs.getSearchResultsPage());
         // Loading recipe
         await _modelJs.loadRecipe(id);
         // Rendering recipe
@@ -637,7 +634,6 @@ const controlServings = function(newServings) {
     // Update the recipe servings (in state)
     _modelJs.updateServings(newServings);
     // Update the recipe view
-    // recipeView.render(model.state.recipe);
     (0, _recipeViewJsDefault.default).update(_modelJs.state.recipe);
 };
 const init = function() {
@@ -1954,7 +1950,7 @@ const loadSearchResults = async function(query) {
 };
 const getSearchResultsPage = function(page = state.search.page) {
     state.search.page = page;
-    const start = (page - 1) * state.search.resultsPerPage; // 0 - for example of we requested page 1: 1 - 1 is 0, and 0 * 10 is 0, so from that position in array of results
+    const start = (page - 1) * state.search.resultsPerPage; // 0 - for example if we requested page 1: 1 - 1 is 0, and 0 * 10 is 0, so from that position in array of results
     const end = page * state.search.resultsPerPage; // 9
     return state.search.results.slice(start, end);
 };
@@ -2744,7 +2740,6 @@ class View {
         this._parentElement.insertAdjacentHTML("afterbegin", markup);
     }
     update(data) {
-        if (!data || Array.isArray(data) && data.length === 0) return this.renderError();
         this._data = data;
         const newMarkup = this._generateMarkup();
         // comparing old DOM element to new markup, and changing only what's been updated, without rerendering entire recipe
@@ -2756,11 +2751,13 @@ class View {
             // method for comparing, available on all nodes- isEqualNode()
             // console.log(curEl, newEl.isEqualNode(curEl));
             // Updates changed TEXT
-            if (!newEl.isEqualNode(curEl) && newEl.firstChild?.nodeValue.trim() !== "") // console.log(newEl.firstChild.nodeValue.trim());
-            // replacing only text
+            if (!newEl.isEqualNode(curEl) && newEl.firstChild?.nodeValue.trim() !== "") // replacing only text
             curEl.textContent = newEl.textContent;
             // Updates changed ATTRIBUTES
-            if (!newEl.isEqualNode(curEl)) console.log(newEl.attributes); // returns all attributes that have been changed
+            if (!newEl.isEqualNode(curEl)) // console.log(newEl.attributes); // returns all attributes that have been changed
+            Array.from(newEl.attributes).forEach((attr)=>{
+                curEl.setAttribute(attr.name, attr.value);
+            });
         });
     }
     _clear() {
@@ -3138,8 +3135,9 @@ class ResultsView extends (0, _viewDefault.default) {
         return this._data.map(this._generateMarkupPreview).join("");
     }
     _generateMarkupPreview(result) {
+        const id = window.location.hash.slice(1);
         return `<li class="preview">
-    <a class="preview__link" href="#${result.id}">
+    <a class="preview__link ${result.id === id ? "preview__link--active" : ""}" href="#${result.id}">
       <figure class="preview__fig">
         <img src="${result.image}" alt="${result.title}" />
       </figure>
@@ -3174,7 +3172,6 @@ class PaginationView extends (0, _viewDefault.default) {
     _generateMarkup() {
         const curPage = this._data.page;
         const numPages = Math.ceil(this._data.results.length / this._data.resultsPerPage);
-        console.log(numPages);
         // Page 1, and there are other pages
         if (curPage === 1 && numPages > 1) return `<button data-goto="${curPage + 1}" class="btn--inline pagination__btn--next">
       <span>Page ${curPage + 1}</span>
