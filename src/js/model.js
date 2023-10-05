@@ -30,7 +30,7 @@ export const loadRecipe = async function (id) {
     };
 
     // checking if there is already a recipe with the same id in the bookmarks state. if yes, we'll mark current recipe we got from API as bookmarker=true
-    // some() loops over array and return true if any of them is true for the condition we specified
+    // some() returns true if any of them in array is true for the condition we specified
     if (state.bookmarks.some(bookmark => bookmark.id === id))
       state.recipe.bookmarked = true;
     else state.recipe.bookmarked = false;
