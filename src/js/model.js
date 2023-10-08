@@ -58,7 +58,7 @@ export const loadSearchResults = async function (query) {
       };
     });
 
-    // when we search for something else, page will reset to firs one (it won't stay on 3rd page, for example, as it did before)
+    // when we search for something else, page will reset to first one (it won't stay on 3rd page, as it did before)
     state.search.page = 1;
   } catch (err) {
     console.error(`${err} 💥💥💥💥`);
@@ -84,7 +84,7 @@ export const updateServings = function (newServings) {
   state.recipe.servings = newServings;
 };
 
-// storing bookmarks in local storage
+// Storing bookmarks in local storage
 const persistBookmarks = function () {
   localStorage.setItem('bookmarks', JSON.stringify(state.bookmarks));
 };
@@ -93,18 +93,18 @@ export const addBookmark = function (recipe) {
   // Add bookmark
   state.bookmarks.push(recipe);
 
-  // mark current recipe as bookmarked
+  // Mark current recipe as bookmarked
   if (recipe.id === state.recipe.id) state.recipe.bookmarked = true;
 
   persistBookmarks();
 };
 
 export const deleteBookmark = function (id) {
-  // remove bookmark
+  // Remove bookmark
   const index = state.bookmarks.findIndex(el => el.id === id);
   state.bookmarks.splice(index, 1);
 
-  // mark current recipe as NOT bookmarked
+  // Mark current recipe as NOT bookmarked
   if (id === state.recipe.id) state.recipe.bookmarked = false;
 
   persistBookmarks();
