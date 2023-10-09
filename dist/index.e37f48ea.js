@@ -656,6 +656,10 @@ const controlAddBookmark = function() {
 const controlBookmarks = function() {
     (0, _bookmarksViewJsDefault.default).render(_modelJs.state.bookmarks);
 };
+const controlAddRecipe = function(newRecipe) {
+    console.log(newRecipe);
+// Upload new recipe data
+};
 const init = function() {
     (0, _bookmarksViewJsDefault.default).addHandlerRender(controlBookmarks);
     (0, _recipeViewJsDefault.default).addHandlerRender(controlRecipes);
@@ -663,6 +667,7 @@ const init = function() {
     (0, _recipeViewJsDefault.default).addHandlerAddBookmark(controlAddBookmark);
     (0, _searchViewJsDefault.default).addHandlerSearch(controlSearchResults);
     (0, _paginationViewJsDefault.default).addHandlerClick(controlPagintaion);
+    (0, _addRecipeViewJsDefault.default).addHandlerUpload(controlAddRecipe);
 };
 init();
 
@@ -1972,7 +1977,7 @@ const loadSearchResults = async function(query) {
                 image: rec.image_url
             };
         });
-        // when we search for something else, page will reset to firs one (it won't stay on 3rd page, for example, as it did before)
+        // when we search for something else, page will reset to first one (it won't stay on 3rd page, as it did before)
         state.search.page = 1;
     } catch (err) {
         console.error(`${err} 💥💥💥💥`);
@@ -1992,22 +1997,22 @@ const updateServings = function(newServings) {
     });
     state.recipe.servings = newServings;
 };
-// storing bookmarks in local storage
+// Storing bookmarks in local storage
 const persistBookmarks = function() {
     localStorage.setItem("bookmarks", JSON.stringify(state.bookmarks));
 };
 const addBookmark = function(recipe) {
     // Add bookmark
     state.bookmarks.push(recipe);
-    // mark current recipe as bookmarked
+    // Mark current recipe as bookmarked
     if (recipe.id === state.recipe.id) state.recipe.bookmarked = true;
     persistBookmarks();
 };
 const deleteBookmark = function(id) {
-    // remove bookmark
+    // Remove bookmark
     const index = state.bookmarks.findIndex((el)=>el.id === id);
     state.bookmarks.splice(index, 1);
-    // mark current recipe as NOT bookmarked
+    // Mark current recipe as NOT bookmarked
     if (id === state.recipe.id) state.recipe.bookmarked = false;
     persistBookmarks();
 };
@@ -3341,6 +3346,16 @@ class AddRecipeView extends (0, _viewDefault.default) {
     _addHandlerHideWindow() {
         this._btnClose.addEventListener("click", this.toggleWindow.bind(this));
         this._overlay.addEventListener("click", this.toggleWindow.bind(this));
+    }
+    addHandlerUpload(handler) {
+        this._parentElement.addEventListener("submit", function(e) {
+            e.preventDefault();
+            const dataArr = [
+                ...new FormData(this)
+            ]; // returns an object, which we spread into an array of all the fields that are in that form
+            const data = Object.fromEntries(dataArr); // turning array into object
+            handler(data);
+        });
     }
     _generateMarkup() {}
 }
