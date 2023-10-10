@@ -93,6 +93,7 @@ const controlAddRecipe = function (newRecipe) {
   console.log(newRecipe);
 
   // Upload new recipe data
+  model.uploadRecipe(newRecipe);
 };
 
 const init = function () {
