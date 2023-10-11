@@ -89,11 +89,15 @@ const controlBookmarks = function () {
   bookmarksView.render(model.state.bookmarks);
 };
 
-const controlAddRecipe = function (newRecipe) {
-  console.log(newRecipe);
-
-  // Upload new recipe data
-  model.uploadRecipe(newRecipe);
+const controlAddRecipe = async function (newRecipe) {
+  try {
+    // Upload new recipe data
+    await model.uploadRecipe(newRecipe);
+    console.log(model.state.recipe);
+  } catch (err) {
+    console.error('💥', err);
+    addRecipeView.renderError(err.message);
+  }
 };
 
 const init = function () {
