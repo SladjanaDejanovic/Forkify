@@ -12,7 +12,6 @@ export const state = {
   },
   bookmarks: [],
 };
-
 const createRecipeObject = function (data) {
   const { recipe } = data.data;
   return {
@@ -39,7 +38,7 @@ export const loadRecipe = async function (id) {
       state.recipe.bookmarked = true;
     else state.recipe.bookmarked = false;
 
-    // console.log(state.recipe);
+    console.log(state.recipe);
   } catch (err) {
     // Temp error handling
     console.error(`${err} 💥💥💥💥`);
@@ -122,11 +121,11 @@ export const uploadRecipe = async function (newRecipe) {
         const ingArr = ing[1].replaceAll(' ', '').split(',');
         if (ingArr.length !== 3)
           throw new Error(
-            'Wrong ingredient format! Please use the correct format :) '
+            'Wrong ingredient format! Please use the correct format :)'
           );
         const [quantity, unit, description] = ingArr;
 
-        return { quantity, unit, description };
+        return { quantity: quantity ? +quantity : null, unit, description };
       });
 
     const recipe = {
@@ -143,7 +142,9 @@ export const uploadRecipe = async function (newRecipe) {
       `${API_URL}?search=${recipe.title}&key=${KEY}`,
       recipe
     );
+
     state.recipe = createRecipeObject(data);
+    console.log(recipe);
   } catch (err) {
     throw err;
   }

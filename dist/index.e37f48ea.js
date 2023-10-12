@@ -608,6 +608,7 @@ const controlRecipes = async function() {
         (0, _bookmarksViewJsDefault.default).update(_modelJs.state.bookmarks);
         // Loading recipe
         await _modelJs.loadRecipe(id);
+        // await model.loadRecipe(data);
         // Rendering recipe
         (0, _recipeViewJsDefault.default).render(_modelJs.state.recipe);
     } catch (err) {
@@ -660,7 +661,7 @@ const controlAddRecipe = async function(newRecipe) {
     try {
         // Upload new recipe data
         await _modelJs.uploadRecipe(newRecipe);
-        console.log(_modelJs.state.recipe);
+    // console.log(model.state.recipe);
     } catch (err) {
         console.error("\uD83D\uDCA5", err);
         (0, _addRecipeViewJsDefault.default).renderError(err.message);
@@ -1967,7 +1968,7 @@ const loadRecipe = async function(id) {
         // some() returns true if any of them in array is true for the condition we specified
         if (state.bookmarks.some((bookmark)=>bookmark.id === id)) state.recipe.bookmarked = true;
         else state.recipe.bookmarked = false;
-    // console.log(state.recipe);
+        console.log(state.recipe);
     } catch (err) {
         // Temp error handling
         console.error(`${err} 💥💥💥💥`);
@@ -2031,10 +2032,10 @@ const uploadRecipe = async function(newRecipe) {
         const ingredients = Object.entries(newRecipe) // make arary with Object.entries()
         .filter((entry)=>entry[0].startsWith("ingredient") && entry[1] !== "").map((ing)=>{
             const ingArr = ing[1].replaceAll(" ", "").split(",");
-            if (ingArr.length !== 3) throw new Error("Wrong ingredient format! Please use the correct format :) ");
+            if (ingArr.length !== 3) throw new Error("Wrong ingredient format! Please use the correct format :)");
             const [quantity, unit, description] = ingArr;
             return {
-                quantity,
+                quantity: quantity ? +quantity : null,
                 unit,
                 description
             };
@@ -2050,6 +2051,7 @@ const uploadRecipe = async function(newRecipe) {
         };
         const data = await (0, _helpersJs.sendJSON)(`${(0, _configJs.API_URL)}?search=${recipe.title}&key=${(0, _configJs.KEY)}`, recipe);
         state.recipe = createRecipeObject(data);
+        console.log(recipe);
     } catch (err) {
         throw err;
     }
@@ -2708,8 +2710,9 @@ const timeout = function(s) {
 const getJSON = async function(url) {
     try {
         const fetchPro = fetch(url);
+        // const res = await Promise.race([fetch(url), timeout(TIMEOUT_SEC)]);
         const res = await Promise.race([
-            fetch(url),
+            fetchPro,
             timeout((0, _configJs.TIMEOUT_SEC))
         ]);
         const data = await res.json();
@@ -2728,11 +2731,11 @@ const sendJSON = async function(url, uploadData) {
             },
             body: JSON.stringify(uploadData)
         });
-        // const res = await Promise.race([fetchPro, timeout(TIMEOUT_SEC)]);
         const res = await Promise.race([
-            fetch(url),
+            fetchPro,
             timeout((0, _configJs.TIMEOUT_SEC))
         ]);
+        // const res = await Promise.race([fetch(url), timeout(TIMEOUT_SEC)]);
         const data = await res.json();
         if (!res.ok) throw new Error(`${data.message} (${res.status})`);
         return data;

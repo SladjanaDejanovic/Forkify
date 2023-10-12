@@ -27,6 +27,7 @@ const controlRecipes = async function () {
     bookmarksView.update(model.state.bookmarks);
     // Loading recipe
     await model.loadRecipe(id);
+    // await model.loadRecipe(data);
 
     // Rendering recipe
     recipeView.render(model.state.recipe);
@@ -93,7 +94,7 @@ const controlAddRecipe = async function (newRecipe) {
   try {
     // Upload new recipe data
     await model.uploadRecipe(newRecipe);
-    console.log(model.state.recipe);
+    // console.log(model.state.recipe);
   } catch (err) {
     console.error('💥', err);
     addRecipeView.renderError(err.message);
