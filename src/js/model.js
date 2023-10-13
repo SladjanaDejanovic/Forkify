@@ -23,6 +23,7 @@ const createRecipeObject = function (data) {
     servings: recipe.servings,
     cookingTime: recipe.cooking_time,
     ingredients: recipe.ingredients,
+    ...(recipe.key && { key: recipe.key }), //to add key to the object if the recipe has a key; so this shortcurcuits bc of && if there isnt a key, therefor not adding a key property and creating a bug. so if there is no key, first part (recipe,key) is a falsy value and nothing happen. but if there is a key, the second part will be returned, creating an object {key: recipe.key}, so the spread operator makes it into a property by taking out the values
   };
 };
 
@@ -144,7 +145,8 @@ export const uploadRecipe = async function (newRecipe) {
     );
 
     state.recipe = createRecipeObject(data);
-    console.log(recipe);
+    addBookmark(state.recipe);
+    // console.log(recipe);
   } catch (err) {
     throw err;
   }

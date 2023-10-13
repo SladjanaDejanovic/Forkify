@@ -582,6 +582,7 @@ So in the publisher-Subscriber pattern we have a publisher which is some code th
 Subscribe to the publisher by passing into subscriber function as an argument. That means that as soon as the program loads, the init function is called which in turn immediately calls the addHandlerRender function from the view (bc the controller imports both view and model). As we call addHendlerRender, we pass in our controlRecipes function as an argument, subscribing controlRecipes to addHandlerRender. Now addHandlerRender listens for events using the addEventListener method as always, and then as soon as the event actually happens, the controlRecipes function will be called as the callback function of addEventListener (as soon as the publisher publishes an event the subscriber will get called)
 */ 
 var _modelJs = require("./model.js");
+var _configJs = require("./config.js");
 var _recipeViewJs = require("./views/recipeView.js");
 var _recipeViewJsDefault = parcelHelpers.interopDefault(_recipeViewJs);
 var _searchViewJs = require("./views/searchView.js");
@@ -659,9 +660,19 @@ const controlBookmarks = function() {
 };
 const controlAddRecipe = async function(newRecipe) {
     try {
+        // Show loading spinner
+        (0, _addRecipeViewJsDefault.default).renderSpinner();
         // Upload new recipe data
         await _modelJs.uploadRecipe(newRecipe);
-    // console.log(model.state.recipe);
+        console.log(_modelJs.state.recipe);
+        // Render recipe
+        (0, _recipeViewJsDefault.default).render(_modelJs.state.recipe);
+        // Close form window
+        setTimeout(function() {
+            (0, _addRecipeViewJsDefault.default).toggleWindow();
+        }, (0, _configJs.MODAL_CLOSE_SEC) * 1000);
+        // Success message
+        (0, _addRecipeViewJsDefault.default).renderMessage();
     } catch (err) {
         console.error("\uD83D\uDCA5", err);
         (0, _addRecipeViewJsDefault.default).renderError(err.message);
@@ -678,7 +689,7 @@ const init = function() {
 };
 init();
 
-},{"core-js/modules/web.immediate.js":"49tUX","./model.js":"Y4A21","./views/recipeView.js":"l60JC","./views/searchView.js":"9OQAM","./views/resultsView.js":"cSbZE","./views/paginationView.js":"6z7bi","regenerator-runtime/runtime":"dXNgZ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./views/bookmarksView.js":"4Lqzq","./views/addRecipeView.js":"i6DNj"}],"49tUX":[function(require,module,exports) {
+},{"core-js/modules/web.immediate.js":"49tUX","./model.js":"Y4A21","./views/recipeView.js":"l60JC","./views/searchView.js":"9OQAM","./views/resultsView.js":"cSbZE","./views/paginationView.js":"6z7bi","regenerator-runtime/runtime":"dXNgZ","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./views/bookmarksView.js":"4Lqzq","./views/addRecipeView.js":"i6DNj","./config.js":"k5Hzs"}],"49tUX":[function(require,module,exports) {
 "use strict";
 // TODO: Remove this module from `core-js@4` since it's split to modules listed below
 require("52e9b3eefbbce1ed");
@@ -1957,7 +1968,10 @@ const createRecipeObject = function(data) {
         image: recipe.image_url,
         servings: recipe.servings,
         cookingTime: recipe.cooking_time,
-        ingredients: recipe.ingredients
+        ingredients: recipe.ingredients,
+        ...recipe.key && {
+            key: recipe.key
+        }
     };
 };
 const loadRecipe = async function(id) {
@@ -2051,7 +2065,8 @@ const uploadRecipe = async function(newRecipe) {
         };
         const data = await (0, _helpersJs.sendJSON)(`${(0, _configJs.API_URL)}?search=${recipe.title}&key=${(0, _configJs.KEY)}`, recipe);
         state.recipe = createRecipeObject(data);
-        console.log(recipe);
+        addBookmark(state.recipe);
+    // console.log(recipe);
     } catch (err) {
         throw err;
     }
@@ -2657,10 +2672,12 @@ parcelHelpers.export(exports, "API_URL", ()=>API_URL);
 parcelHelpers.export(exports, "TIMEOUT_SEC", ()=>TIMEOUT_SEC);
 parcelHelpers.export(exports, "RES_PER_PAGE", ()=>RES_PER_PAGE);
 parcelHelpers.export(exports, "KEY", ()=>KEY);
+parcelHelpers.export(exports, "MODAL_CLOSE_SEC", ()=>MODAL_CLOSE_SEC);
 const API_URL = `https://forkify-api.herokuapp.com/api/v2/recipes/`;
 const TIMEOUT_SEC = 10;
 const RES_PER_PAGE = 10;
 const KEY = `89242f0a-343e-40e4-81f7-3318cb660857`;
+const MODAL_CLOSE_SEC = 2.5;
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports) {
 exports.interopDefault = function(a) {
@@ -3394,6 +3411,7 @@ var _iconsSvg = require("../../img/icons.svg");
 var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 class AddRecipeView extends (0, _viewDefault.default) {
     _parentElement = document.querySelector(".upload");
+    _message = "Recipe was successfully uploaded!";
     _window = document.querySelector(".add-recipe-window");
     _overlay = document.querySelector(".overlay");
     _btnOpen = document.querySelector(".nav__btn--add-recipe");
