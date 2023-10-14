@@ -68,10 +68,10 @@ const controlPagintaion = function (goToPage) {
 };
 
 const controlServings = function (newServings) {
-  // Update the recipe servings (in state)
+  // 3) Update the recipe servings (in state)
   model.updateServings(newServings);
 
-  // Update the recipe view
+  // 4) Update the recipe view
   recipeView.update(model.state.recipe);
 };
 
@@ -80,10 +80,11 @@ const controlAddBookmark = function () {
   if (!model.state.recipe.bookmarked) model.addBookmark(model.state.recipe);
   else model.deleteBookmark(model.state.recipe.id);
   // console.log(model.state.recipe);
-  //update recipe view
+
+  // Update recipe view
   recipeView.update(model.state.recipe);
 
-  // render all bookmarks
+  // Render all bookmarks
   bookmarksView.render(model.state.bookmarks);
 };
 

@@ -62,7 +62,6 @@ export const loadSearchResults = async function (query) {
       };
     });
 
-    // when we search for something else, page will reset to first one (it won't stay on 3rd page, as it did before)
     state.search.page = 1;
   } catch (err) {
     console.error(`${err} 💥💥💥💥`);
