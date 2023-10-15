@@ -104,13 +104,20 @@ const controlAddRecipe = async function (newRecipe) {
     // Render recipe
     recipeView.render(model.state.recipe);
 
+    // Success message
+    addRecipeView.renderMessage();
+
+    // Render bookmark view
+    bookmarksView.render(model.state.bookmarks);
+
+    // Change id in url
+    window.history.pushState(null, '', `#${model.state.recipe.id}`); // using history api from browser, changing url without reloading the page. pushState() takes 3 arguments: state, title, url
+    // window.history.back() // going to previous page when clicked browser button for backwards
+
     // Close form window
     setTimeout(function () {
       addRecipeView.toggleWindow();
     }, MODAL_CLOSE_SEC * 1000);
-
-    // Success message
-    addRecipeView.renderMessage();
   } catch (err) {
     console.error('💥', err);
     addRecipeView.renderError(err.message);
