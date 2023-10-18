@@ -30,7 +30,7 @@ const controlRecipes = async function () {
 
     // Loading recipe
     await model.loadRecipe(id);
-    // await model.loadRecipe(data);
+   
 
     // Rendering recipe
     recipeView.render(model.state.recipe);
