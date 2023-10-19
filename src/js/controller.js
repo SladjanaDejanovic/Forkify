@@ -30,7 +30,6 @@ const controlRecipes = async function () {
 
     // Loading recipe
     await model.loadRecipe(id);
-   
 
     // Rendering recipe
     recipeView.render(model.state.recipe);
@@ -78,7 +77,7 @@ const controlServings = function (newServings) {
 };
 
 const controlAddBookmark = function () {
-  // add or remove bookmarks
+  // Add or remove bookmarks
   if (!model.state.recipe.bookmarked) model.addBookmark(model.state.recipe);
   else model.deleteBookmark(model.state.recipe.id);
   // console.log(model.state.recipe);
@@ -112,7 +111,7 @@ const controlAddRecipe = async function (newRecipe) {
     // Render bookmark view
     bookmarksView.render(model.state.bookmarks);
 
-    // Change id in url
+    // Change ID in url
     window.history.pushState(null, '', `#${model.state.recipe.id}`); // using history api from browser, changing url without reloading the page. pushState() takes 3 arguments: state, title, url
     // window.history.back() // going to previous page when clicked browser button for backwards
 
