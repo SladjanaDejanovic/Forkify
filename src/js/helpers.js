@@ -35,22 +35,6 @@ export const AJAX = async function (url, uploadData = undefined) {
   }
 };
 
-/*
-export const getJSON = async function (url) {
-  try {
-    const fetchPro = fetch(url);
-    // const res = await Promise.race([fetch(url), timeout(TIMEOUT_SEC)]);
-    const res = await Promise.race([fetchPro, timeout(TIMEOUT_SEC)]);
-    const data = await res.json();
-
-    if (!res.ok) throw new Error(`${data.message} (${res.status})`);
-    return data;
-  } catch (err) {
-    throw err;
-  }
-};
-
-*/
 
 // headers are snippets of text that have informations about request itself
 // application/json - we specify in the request that the data we're gonna send will be in json format, so api can correctly accept taht data and create new recipe in data base
