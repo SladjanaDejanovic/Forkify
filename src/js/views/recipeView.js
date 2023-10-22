@@ -1,6 +1,4 @@
 import View from './View';
-
-// Importing icons
 import icons from '../../img/icons.svg';
 import { Fraction } from 'fractional';
 
