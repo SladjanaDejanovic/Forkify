@@ -23,7 +23,7 @@ const createRecipeObject = function (data) {
     servings: recipe.servings,
     cookingTime: recipe.cooking_time,
     ingredients: recipe.ingredients,
-    ...(recipe.key && { key: recipe.key }), //to add key to the object if the recipe has a key; so this shortcurcuits bc of && if there isnt a key, therefor not adding a key property and creating a bug. so if there is no key, first part (recipe,key) is a falsy value and nothing happen. but if there is a key, the second part will be returned, creating an object {key: recipe.key}, so the spread operator makes it into a property by taking out the values
+    ...(recipe.key && { key: recipe.key }), //if the recipe has a key: so this shortcurcuits bc of && if there isnt a key, therefor not adding a key property and creating a bug. so if there is no key, first part (recipe,key) is a falsy value and nothing happen. but if there is a key, the second part will be returned, creating an object {key: recipe.key}, so the spread operator makes it into a property by taking out the values
   };
 };
 
@@ -33,8 +33,8 @@ export const loadRecipe = async function (id) {
 
     state.recipe = createRecipeObject(data);
 
-    // checking if there is already a recipe with the same id in the bookmarks state. if yes, we'll mark current recipe we got from API as bookmarker=true
-    // some() returns true if any of them in array is true for the condition we specified
+    // checking if there is already a recipe with the same id in the bookmarks state. if yes, we'll mark current recipe we got from API as bookmarked=true
+    // some() returns true if any of elements in array is true for the condition we specified
     if (state.bookmarks.some(bookmark => bookmark.id === id))
       state.recipe.bookmarked = true;
     else state.recipe.bookmarked = false;
