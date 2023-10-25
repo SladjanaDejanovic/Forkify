@@ -605,11 +605,10 @@ const controlRecipes = async function() {
         (0, _recipeViewJsDefault.default).renderSpinner();
         // Update results view to mark selected search result
         (0, _resultsViewJsDefault.default).update(_modelJs.getSearchResultsPage());
-        // updating bookmarks view
+        // Updating bookmarks view
         (0, _bookmarksViewJsDefault.default).update(_modelJs.state.bookmarks);
         // Loading recipe
         await _modelJs.loadRecipe(id);
-        // await model.loadRecipe(data);
         // Rendering recipe
         (0, _recipeViewJsDefault.default).render(_modelJs.state.recipe);
     } catch (err) {
@@ -637,6 +636,7 @@ const controlPagintaion = function(goToPage) {
     // 1) Render NEW results
     (0, _resultsViewJsDefault.default).render(_modelJs.getSearchResultsPage(goToPage));
     // 2) Render NEW pagination buttons
+    // paginationView.render(model.state.search, goToPage);
     (0, _paginationViewJsDefault.default).render(_modelJs.state.search);
 };
 const controlServings = function(newServings) {
@@ -646,7 +646,7 @@ const controlServings = function(newServings) {
     (0, _recipeViewJsDefault.default).update(_modelJs.state.recipe);
 };
 const controlAddBookmark = function() {
-    // add or remove bookmarks
+    // Add or remove bookmarks
     if (!_modelJs.state.recipe.bookmarked) _modelJs.addBookmark(_modelJs.state.recipe);
     else _modelJs.deleteBookmark(_modelJs.state.recipe.id);
     // console.log(model.state.recipe);
@@ -671,7 +671,7 @@ const controlAddRecipe = async function(newRecipe) {
         (0, _addRecipeViewJsDefault.default).renderMessage();
         // Render bookmark view
         (0, _bookmarksViewJsDefault.default).render(_modelJs.state.bookmarks);
-        // Change id in url
+        // Change ID in url
         window.history.pushState(null, "", `#${_modelJs.state.recipe.id}`); // using history api from browser, changing url without reloading the page. pushState() takes 3 arguments: state, title, url
         // window.history.back() // going to previous page when clicked browser button for backwards
         // Close form window
@@ -1983,8 +1983,8 @@ const loadRecipe = async function(id) {
     try {
         const data = await (0, _helpersJs.AJAX)(`${(0, _configJs.API_URL)}${id}?key=${(0, _configJs.KEY)}`);
         state.recipe = createRecipeObject(data);
-        // checking if there is already a recipe with the same id in the bookmarks state. if yes, we'll mark current recipe we got from API as bookmarker=true
-        // some() returns true if any of them in array is true for the condition we specified
+        // checking if there is already a recipe with the same id in the bookmarks state. if yes, we'll mark current recipe we got from API as bookmarked=true
+        // some() returns true if any of elements in array is true for the condition we specified
         if (state.bookmarks.some((bookmark)=>bookmark.id === id)) state.recipe.bookmarked = true;
         else state.recipe.bookmarked = false;
         console.log(state.recipe);
@@ -2052,7 +2052,6 @@ const uploadRecipe = async function(newRecipe) {
     try {
         const ingredients = Object.entries(newRecipe) // make arary with Object.entries()
         .filter((entry)=>entry[0].startsWith("ingredient") && entry[1] !== "").map((ing)=>{
-            // const ingArr = ing[1].replaceAll(' ', '').split(',');
             const ingArr = ing[1].split(",").map((el)=>el.trim());
             if (ingArr.length !== 3) throw new Error("Wrong ingredient format! Please use the correct format :)");
             const [quantity, unit, description] = ingArr;
@@ -2752,40 +2751,7 @@ const AJAX = async function(url, uploadData) {
     } catch (err) {
         throw err; // promise that is being returned from getJSON will be reject with this error handling, and we will be able to handle the error in model.js, where we want it. We propagated error from one async funciton to another by re-throwing it here in this catch block
     }
-}; /*
-export const getJSON = async function (url) {
-  try {
-    const fetchPro = fetch(url);
-    // const res = await Promise.race([fetch(url), timeout(TIMEOUT_SEC)]);
-    const res = await Promise.race([fetchPro, timeout(TIMEOUT_SEC)]);
-    const data = await res.json();
-
-    if (!res.ok) throw new Error(`${data.message} (${res.status})`);
-    return data;
-  } catch (err) {
-    throw err;
-  }
-};
-
-export const sendJSON = async function (url, uploadData) {
-  try {
-    const fetchPro = fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(uploadData),
-    });
-    const res = await Promise.race([fetchPro, timeout(TIMEOUT_SEC)]);
-    const data = await res.json();
-
-    if (!res.ok) throw new Error(`${data.message} (${res.status})`);
-    return data;
-  } catch (err) {
-    throw err;
-  }
-};
-*/  // headers are snippets of text that have informations about request itself
+}; // headers are snippets of text that have informations about request itself
  // application/json - we specify in the request that the data we're gonna send will be in json format, so api can correctly accept taht data and create new recipe in data base
 
 },{"./config.js":"k5Hzs","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","regenerator-runtime":"dXNgZ"}],"l60JC":[function(require,module,exports) {
@@ -2793,7 +2759,6 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 var _view = require("./View");
 var _viewDefault = parcelHelpers.interopDefault(_view);
-// Importing icons
 var _iconsSvg = require("../../img/icons.svg");
 var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 var _fractional = require("fractional");
@@ -2917,7 +2882,15 @@ var _iconsSvg = require("../../img/icons.svg");
 var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
 class View {
     _data;
-    render(data, render = true) {
+    /**
+   * Render the recieved object to the DOM
+   * @param {Object | Object[]} data The data to be rendered (e.g. recipe)
+   * @param {boolean} [render=true] If false, create markup string instead of rendering to the DOM
+   * @returns {undefined | string} A markup string is returned if render=false
+   * @this {Object} View instance
+   * @author Sladjana Dejanovic
+   * @todo Finish implementation
+   */ render(data, render = true) {
         if (!data || Array.isArray(data) && data.length === 0) return this.renderError();
         this._data = data;
         const markup = this._generateMarkup();
@@ -3373,10 +3346,26 @@ class PaginationView extends (0, _viewDefault.default) {
             handler(goToPage);
         });
     }
-    // _generateMarkupButton() {}
     _generateMarkup() {
         const curPage = this._data.page;
         const numPages = Math.ceil(this._data.results.length / this._data.resultsPerPage);
+        // const generatePageButtons = function (currentPage, totalPages) {
+        //   const pages = [];
+        //   for (let i = 1; i <= totalPages; i++) {
+        //     if (i === currentPage) {
+        //       pages.push(renderButton(i, 'current'));
+        //     } else if (i === 1 && currentPage !== 1) {
+        //       pages.push(renderButton(i, 'prev'));
+        //     } else if (i === totalPages && currentPage !== totalPages) {
+        //       pages.push(renderButton(i, 'next'));
+        //     } else if (i === 1 && totalPages === 1) {
+        //       pages.push(renderButton(i, 'current'));
+        //     } else if (i >= currentPage - 1 && i <= currentPage + 1) {
+        //       pages.push(renderButton(i, 'other'));
+        //     }
+        //   }
+        //   return pages.join('');
+        // };
         // Page 1, and there are other pages
         if (curPage === 1 && numPages > 1) return `<button data-goto="${curPage + 1}" class="btn--inline pagination__btn--next">
       <span>Page ${curPage + 1}</span>
@@ -3408,7 +3397,52 @@ class PaginationView extends (0, _viewDefault.default) {
     </button>`;
         // Page 1, and there are no other pages
         return "";
+    /*
+    // Page 1, and there are other pages
+    if (curPage === 1 && numPages > 1) {
+      return `
+      ${generatePageButtons(curPage, numPages)}
+      <button data-goto="${
+        curPage + 1
+      }" class="btn--inline pagination__btn--next">
+        <span>Page ${curPage + 1}</span>
+        <svg class="search__icon">
+          <use href="${icons}#icon-arrow-right"></use>
+        </svg>
+      </button>`;
     }
+
+    // Last page
+    if (curPage === numPages && numPages > 1) {
+      return `
+      <button data-goto="${
+        curPage - 1
+      }" class="btn--inline pagination__btn--prev">
+        <svg class="search__icon">
+          <use href="${icons}#icon-arrow-left"></use>
+        </svg>
+        <span>Page ${curPage - 1}</span>
+      </button>
+      ${generatePageButtons(curPage, numPages)}
+    `;
+    }
+
+    // Other page
+    if (curPage < numPages) {
+      return `
+      ${generatePageButtons(curPage, numPages)}
+      <button data-goto="${
+        curPage + 1
+      }" class="btn--inline pagination__btn--next">
+        <span>Page ${curPage + 1}</span>
+        <svg class="search__icon">
+          <use href="${icons}#icon-arrow-right"></use>
+        </svg>
+      </button>`;
+    }
+
+    // Page 1, and there are no other pages
+    return '';*/ }
 }
 exports.default = new PaginationView();
 
