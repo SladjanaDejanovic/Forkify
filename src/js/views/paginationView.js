@@ -21,26 +21,6 @@ class PaginationView extends View {
       this._data.results.length / this._data.resultsPerPage
     );
 
-    // const generatePageButtons = function (currentPage, totalPages) {
-    //   const pages = [];
-
-    //   for (let i = 1; i <= totalPages; i++) {
-    //     if (i === currentPage) {
-    //       pages.push(renderButton(i, 'current'));
-    //     } else if (i === 1 && currentPage !== 1) {
-    //       pages.push(renderButton(i, 'prev'));
-    //     } else if (i === totalPages && currentPage !== totalPages) {
-    //       pages.push(renderButton(i, 'next'));
-    //     } else if (i === 1 && totalPages === 1) {
-    //       pages.push(renderButton(i, 'current'));
-    //     } else if (i >= currentPage - 1 && i <= currentPage + 1) {
-    //       pages.push(renderButton(i, 'other'));
-    //     }
-    //   }
-
-    //   return pages.join('');
-    // };
-
     // Page 1, and there are other pages
     if (curPage === 1 && numPages > 1) {
       return `<button data-goto="${
