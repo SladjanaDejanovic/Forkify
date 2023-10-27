@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "Recipe application",
   "browserslist": "> 0.5%, last 2 versions, not dead",
+  "default": "index.html",
   "scripts": {
     "start": "parcel index.html",
-    "build": "parcel build index.html"
+    "build": "parcel build index.html --dist-dir ./dist"
   },
   "repository": {
     "type": "module",
@@ -28,6 +29,7 @@
   "dependencies": {
     "core-js": "^3.32.1",
     "fractional": "^1.0.0",
+    "fracty": "^1.0.11",
     "regenerator-runtime": "^0.14.0"
   },
   "babel": {
@@ -39,5 +41,10 @@
     "presets": [
       "@babel/preset-env"
     ]
+  },
+  "overrides": {
+    "@parcel/optimizer-htmlnano": {
+      "htmlnano": "2.0.3"
+    }
   }
 }
