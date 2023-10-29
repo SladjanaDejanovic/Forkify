@@ -144,3 +144,22 @@ So in the publisher-Subscriber pattern we have a publisher which is some code th
 
 Subscribe to the publisher by passing into subscriber function as an argument. That means that as soon as the program loads, the init function is called which in turn immediately calls the addHandlerRender function from the view (bc the controller imports both view and model). As we call addHendlerRender, we pass in our controlRecipes function as an argument, subscribing controlRecipes to addHandlerRender. Now addHandlerRender listens for events using the addEventListener method as always, and then as soon as the event actually happens, the controlRecipes function will be called as the callback function of addEventListener (as soon as the publisher publishes an event the subscriber will get called)
 */
+
+// add readme
+// make another branch for commits if you wanna add something, bc this will be connected to netlify, for continuous deployement/integration, daploying from main branch. so make another branch before commiting something
+
+// code that we manualy deployed before to netlify is in dist folder, but since a practice is to add dist folder to git ignore, dist is not in repository then. but we tell netlify to run build commant whenever there is a change in repository (copying build command from package.json and pasting under build command)
+
+/*  // 
+add delete recipe feature
+delete only recipe added by user
+on recipes added by user there will be a button for delete
+in controller make func controlDeleteRecipe`
+
+
+make func to get recipe and delete that recipe with api key
+try code bellow
+const data = await AJAX(
+  `${API_URL}?search=${recipe.title}&key=${KEY}`
+);
+*/
