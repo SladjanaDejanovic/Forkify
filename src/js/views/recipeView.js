@@ -25,6 +25,10 @@ class RecipeView extends View {
     });
   }
 
+  addHandlerDeleteRecipe(handler) {
+    console.log('delete me');
+  }
+
   _generateMarkup() {
     return `
     <figure class="recipe__fig">

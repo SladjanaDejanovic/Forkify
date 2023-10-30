@@ -705,11 +705,13 @@ const controlAddRecipe = async function(newRecipe) {
         (0, _addRecipeViewJsDefault.default).renderError(err.message);
     }
 };
+const controlDeleteRecipe = function() {};
 const init = function() {
     (0, _bookmarksViewJsDefault.default).addHandlerRender(controlBookmarks);
     (0, _recipeViewJsDefault.default).addHandlerRender(controlRecipes);
     (0, _recipeViewJsDefault.default).addHandlerUpdateServings(controlServings);
     (0, _recipeViewJsDefault.default).addHandlerAddBookmark(controlAddBookmark);
+    (0, _recipeViewJsDefault.default).addHandlerDeleteRecipe(controlDeleteRecipe);
     (0, _searchViewJsDefault.default).addHandlerSearch(controlSearchResults);
     (0, _paginationViewJsDefault.default).addHandlerClick(controlPagintaion);
     (0, _addRecipeViewJsDefault.default).addHandlerUpload(controlAddRecipe);
@@ -2804,6 +2806,9 @@ class RecipeView extends (0, _viewDefault.default) {
             if (!btn) return;
             handler();
         });
+    }
+    addHandlerDeleteRecipe(handler) {
+        console.log("delete me");
     }
     _generateMarkup() {
         return `

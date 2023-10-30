@@ -126,11 +126,14 @@ const controlAddRecipe = async function (newRecipe) {
   }
 };
 
+const controlDeleteRecipe = function () {};
+
 const init = function () {
   bookmarksView.addHandlerRender(controlBookmarks);
   recipeView.addHandlerRender(controlRecipes);
   recipeView.addHandlerUpdateServings(controlServings);
   recipeView.addHandlerAddBookmark(controlAddBookmark);
+  recipeView.addHandlerDeleteRecipe(controlDeleteRecipe);
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(controlPagintaion);
   addRecipeView.addHandlerUpload(controlAddRecipe);
