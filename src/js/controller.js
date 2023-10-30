@@ -153,8 +153,9 @@ Subscribe to the publisher by passing into subscriber function as an argument. T
 /*  // 
 add delete recipe feature
 delete only recipe added by user
-on recipes added by user there will be a button for delete
-in controller make func controlDeleteRecipe`
+on recipes added by user there will be a button for delete (kinda done, style better, add eventlistener)
+in controller make func controlDeleteRecipe
+addHandlerDeleteRecipe
 
 
 make func to get recipe and delete that recipe with api key
