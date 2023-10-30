@@ -580,6 +580,28 @@ var _webImmediateJs = require("core-js/modules/web.immediate.js"); /*
 So in the publisher-Subscriber pattern we have a publisher which is some code that knows when to react. And in this case, that's going to be the addHandlerRender function because it will contain the addEventListener method, it will know when to react to the event.Subscriber is code that actually wants to react, code that should actually be executed when the event happens,in this case that is the controlRecipes function
 
 Subscribe to the publisher by passing into subscriber function as an argument. That means that as soon as the program loads, the init function is called which in turn immediately calls the addHandlerRender function from the view (bc the controller imports both view and model). As we call addHendlerRender, we pass in our controlRecipes function as an argument, subscribing controlRecipes to addHandlerRender. Now addHandlerRender listens for events using the addEventListener method as always, and then as soon as the event actually happens, the controlRecipes function will be called as the callback function of addEventListener (as soon as the publisher publishes an event the subscriber will get called)
+*/  // add readme
+ // make another branch for commits if you wanna add something, bc this will be connected to netlify, for continuous deployement/integration, daploying from main branch. so make another branch before commiting something
+ // code that we manualy deployed before to netlify is in dist folder, but since a practice is to add dist folder to git ignore, dist is not in repository then. but we tell netlify to run build commant whenever there is a change in repository (copying build command from package.json and pasting under build command)
+ /*  // 
+add delete recipe feature
+delete only recipe added by user
+on recipes added by user there will be a button for delete
+  <div class="recipe__user-generated ${this._data.key ? '' : 'hidden'}">
+            <svg>
+              <use href="${icons}#icon-user"></use>
+            </svg>
+          </div>
+
+
+in controller make func controlDeleteRecipe`
+
+
+make func to get recipe and delete that recipe with api key
+try code bellow
+const data = await AJAX(
+  `${API_URL}?search=${recipe.title}&key=${KEY}`
+);
 */ 
 var _modelJs = require("./model.js");
 var _configJs = require("./config.js");
@@ -2050,7 +2072,7 @@ const deleteBookmark = function(id) {
 };
 const uploadRecipe = async function(newRecipe) {
     try {
-        const ingredients = Object.entries(newRecipe) // make arary with Object.entries()
+        const ingredients = Object.entries(newRecipe) // make array with Object.entries()
         .filter((entry)=>entry[0].startsWith("ingredient") && entry[1] !== "").map((ing)=>{
             const ingArr = ing[1].split(",").map((el)=>el.trim());
             if (ingArr.length !== 3) throw new Error("Wrong ingredient format! Please use the correct format :)");
@@ -2761,7 +2783,6 @@ var _view = require("./View");
 var _viewDefault = parcelHelpers.interopDefault(_view);
 var _iconsSvg = require("../../img/icons.svg");
 var _iconsSvgDefault = parcelHelpers.interopDefault(_iconsSvg);
-// import { Fraction } from 'fractional';
 var _fracty = require("fracty");
 var _fractyDefault = parcelHelpers.interopDefault(_fracty);
 class RecipeView extends (0, _viewDefault.default) {
@@ -2820,7 +2841,7 @@ class RecipeView extends (0, _viewDefault.default) {
                 </svg>
               </button>
             </div>
-          </div>
+            </div>
 
           <div class="recipe__user-generated ${this._data.key ? "" : "hidden"}">
             <svg>
@@ -2831,8 +2852,11 @@ class RecipeView extends (0, _viewDefault.default) {
           <button class="btn--round btn--bookmark">
             <svg class="">
               <use href="${0, _iconsSvgDefault.default}#icon-bookmark${this._data.bookmarked ? "-fill" : ""}"></use>
+    
             </svg>
-          </button>
+          </button> 
+
+          <button class="btn--round ${this._data.key ? "" : "hidden"}">x</button>
         </div>
 
         <div class="recipe__ingredients">
@@ -2866,8 +2890,7 @@ class RecipeView extends (0, _viewDefault.default) {
       <svg class="recipe__icon">
         <use href="${0, _iconsSvgDefault.default}#icon-check"></use>
       </svg>
-      <div class="recipe__quantity">${// ing.quantity ? new Fraction(ing.quantity).toString() : ''
-        ing.quantity ? (0, _fractyDefault.default)(ing.quantity) : ""}</div>
+      <div class="recipe__quantity">${ing.quantity ? (0, _fractyDefault.default)(ing.quantity) : ""}</div>
       <div class="recipe__description">
         <span class="recipe__unit">${ing.unit}</span>
         ${ing.description}

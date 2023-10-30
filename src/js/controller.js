@@ -154,6 +154,13 @@ Subscribe to the publisher by passing into subscriber function as an argument. T
 add delete recipe feature
 delete only recipe added by user
 on recipes added by user there will be a button for delete
+  <div class="recipe__user-generated ${this._data.key ? '' : 'hidden'}">
+            <svg>
+              <use href="${icons}#icon-user"></use>
+            </svg>
+          </div>
+
+
 in controller make func controlDeleteRecipe`
 
 

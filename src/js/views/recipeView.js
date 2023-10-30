@@ -71,7 +71,7 @@ class RecipeView extends View {
                 </svg>
               </button>
             </div>
-          </div>
+            </div>
 
           <div class="recipe__user-generated ${this._data.key ? '' : 'hidden'}">
             <svg>
@@ -84,8 +84,13 @@ class RecipeView extends View {
               <use href="${icons}#icon-bookmark${
       this._data.bookmarked ? '-fill' : ''
     }"></use>
+    
             </svg>
-          </button>
+          </button> 
+
+          <button class="btn--round ${
+            this._data.key ? '' : 'hidden'
+          }">x</button>
         </div>
 
         <div class="recipe__ingredients">

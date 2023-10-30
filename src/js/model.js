@@ -116,7 +116,7 @@ export const deleteBookmark = function (id) {
 
 export const uploadRecipe = async function (newRecipe) {
   try {
-    const ingredients = Object.entries(newRecipe) // make arary with Object.entries()
+    const ingredients = Object.entries(newRecipe) // make array with Object.entries()
       .filter(entry => entry[0].startsWith('ingredient') && entry[1] !== '')
       .map(ing => {
         const ingArr = ing[1].split(',').map(el => el.trim());
