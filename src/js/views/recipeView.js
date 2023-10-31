@@ -92,9 +92,10 @@ class RecipeView extends View {
             </svg>
           </button> 
 
-          <button class="btn--round ${
-            this._data.key ? '' : 'hidden'
-          }">x</button>
+          <button class="btn--round ${this._data.key ? '' : 'hidden'}"> <svg>
+          <use href="${icons}#icon-delete"></use>
+        </svg>
+        </button>
         </div>
 
         <div class="recipe__ingredients">

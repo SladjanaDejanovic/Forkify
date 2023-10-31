@@ -2861,7 +2861,10 @@ class RecipeView extends (0, _viewDefault.default) {
             </svg>
           </button> 
 
-          <button class="btn--round ${this._data.key ? "" : "hidden"}">x</button>
+          <button class="btn--round ${this._data.key ? "" : "hidden"}"> <svg>
+          <use href="${0, _iconsSvgDefault.default}#icon-delete"></use>
+        </svg>
+        </button>
         </div>
 
         <div class="recipe__ingredients">
