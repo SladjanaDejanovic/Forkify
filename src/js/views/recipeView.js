@@ -25,6 +25,10 @@ class RecipeView extends View {
     });
   }
 
+  addHandlerDeleteRecipe(handler) {
+    console.log('delete me');
+  }
+
   _generateMarkup() {
     return `
     <figure class="recipe__fig">
@@ -71,7 +75,7 @@ class RecipeView extends View {
                 </svg>
               </button>
             </div>
-          </div>
+            </div>
 
           <div class="recipe__user-generated ${this._data.key ? '' : 'hidden'}">
             <svg>
@@ -84,8 +88,14 @@ class RecipeView extends View {
               <use href="${icons}#icon-bookmark${
       this._data.bookmarked ? '-fill' : ''
     }"></use>
+    
             </svg>
-          </button>
+          </button> 
+
+          <button class="btn--round ${this._data.key ? '' : 'hidden'}"> <svg>
+          <use href="${icons}#icon-delete"></use>
+        </svg>
+        </button>
         </div>
 
         <div class="recipe__ingredients">

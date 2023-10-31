@@ -699,11 +699,13 @@ const controlAddRecipe = async function(newRecipe) {
         (0, _addRecipeViewJsDefault.default).renderError(err.message);
     }
 };
+const controlDeleteRecipe = function() {};
 const init = function() {
     (0, _bookmarksViewJsDefault.default).addHandlerRender(controlBookmarks);
     (0, _recipeViewJsDefault.default).addHandlerRender(controlRecipes);
     (0, _recipeViewJsDefault.default).addHandlerUpdateServings(controlServings);
     (0, _recipeViewJsDefault.default).addHandlerAddBookmark(controlAddBookmark);
+    (0, _recipeViewJsDefault.default).addHandlerDeleteRecipe(controlDeleteRecipe);
     (0, _searchViewJsDefault.default).addHandlerSearch(controlSearchResults);
     (0, _paginationViewJsDefault.default).addHandlerClick(controlPagintaion);
     (0, _addRecipeViewJsDefault.default).addHandlerUpload(controlAddRecipe);
@@ -2066,7 +2068,7 @@ const deleteBookmark = function(id) {
 };
 const uploadRecipe = async function(newRecipe) {
     try {
-        const ingredients = Object.entries(newRecipe) // make arary with Object.entries()
+        const ingredients = Object.entries(newRecipe) // make array with Object.entries()
         .filter((entry)=>entry[0].startsWith("ingredient") && entry[1] !== "").map((ing)=>{
             const ingArr = ing[1].split(",").map((el)=>el.trim());
             if (ingArr.length !== 3) throw new Error("Wrong ingredient format! Please use the correct format :)");
@@ -2799,6 +2801,9 @@ class RecipeView extends (0, _viewDefault.default) {
             handler();
         });
     }
+    addHandlerDeleteRecipe(handler) {
+        console.log("delete me");
+    }
     _generateMarkup() {
         return `
     <figure class="recipe__fig">
@@ -2835,7 +2840,7 @@ class RecipeView extends (0, _viewDefault.default) {
                 </svg>
               </button>
             </div>
-          </div>
+            </div>
 
           <div class="recipe__user-generated ${this._data.key ? "" : "hidden"}">
             <svg>
@@ -2846,8 +2851,14 @@ class RecipeView extends (0, _viewDefault.default) {
           <button class="btn--round btn--bookmark">
             <svg class="">
               <use href="${0, _iconsSvgDefault.default}#icon-bookmark${this._data.bookmarked ? "-fill" : ""}"></use>
+    
             </svg>
-          </button>
+          </button> 
+
+          <button class="btn--round ${this._data.key ? "" : "hidden"}"> <svg>
+          <use href="${0, _iconsSvgDefault.default}#icon-delete"></use>
+        </svg>
+        </button>
         </div>
 
         <div class="recipe__ingredients">
