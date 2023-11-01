@@ -126,7 +126,21 @@ const controlAddRecipe = async function (newRecipe) {
   }
 };
 
-const controlDeleteRecipe = function () {};
+const controlDeleteRecipe = async function (id) {
+  console.log('delete me');
+  // try {
+  //   if (!id) throw new Error('Invalid recipe ID');
+
+  //   await model.deleteRecipe(recipeId);
+  //   // Remove recipe from state
+  //   state.recipes = state.recipes.filter(recipe => recipe.id !== id);
+
+  //   // Update the view
+  //   recipeView.render(state.recipes);
+  // } catch (err) {
+  //   console.error('Error deleting recipe', err);
+  // }
+};
 
 const init = function () {
   bookmarksView.addHandlerRender(controlBookmarks);
@@ -149,14 +163,13 @@ Subscribe to the publisher by passing into subscriber function as an argument. T
 */
 
 // add readme
-// make another branch for commits if you wanna add something, bc this will be connected to netlify, for continuous deployement/integration, daploying from main branch. so make another branch before commiting something
 
 // code that we manualy deployed before to netlify is in dist folder, but since a practice is to add dist folder to git ignore, dist is not in repository then. but we tell netlify to run build commant whenever there is a change in repository (copying build command from package.json and pasting under build command)
 
 /*  // 
 add delete recipe feature
-delete only recipe added by user
-on recipes added by user there will be a button for delete (kinda done, style better, add eventlistener)
+delete only recipe added by user - recipe with key
+on recipes added by user there will be a button for delete (add eventlistener)
 in controller make func controlDeleteRecipe
 addHandlerDeleteRecipe
 

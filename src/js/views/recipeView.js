@@ -26,7 +26,12 @@ class RecipeView extends View {
   }
 
   addHandlerDeleteRecipe(handler) {
-    console.log('delete me');
+    this._parentElement.addEventListener('click', function (e) {
+      const btn = e.target.closest('.button--delete');
+      const recipeId = btn.dataset.recipeId;
+      if (!btn) return;
+      handler();
+    });
   }
 
   _generateMarkup() {
@@ -92,7 +97,9 @@ class RecipeView extends View {
             </svg>
           </button> 
 
-          <button class="btn--round ${this._data.key ? '' : 'hidden'}"> <svg>
+          <button class="btn--round button--delete ${
+            this._data.key ? '' : 'hidden'
+          }" data-recipe-id="${this._data.id}"> <svg>
           <use href="${icons}#icon-delete"></use>
         </svg>
         </button>

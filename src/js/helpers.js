@@ -13,17 +13,23 @@ const timeout = function (s) {
   });
 };
 
-export const AJAX = async function (url, uploadData = undefined) {
+export const AJAX = async function (
+  url,
+  uploadData = undefined,
+  method = 'GET'
+) {
   try {
     const fetchPro = uploadData
       ? fetch(url, {
-          method: 'POST',
+          method: method,
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify(uploadData),
         })
-      : fetch(url);
+      : fetch(url, {
+          method: method,
+        });
 
     const res = await Promise.race([fetchPro, timeout(TIMEOUT_SEC)]);
     const data = await res.json();
@@ -34,7 +40,6 @@ export const AJAX = async function (url, uploadData = undefined) {
     throw err; // promise that is being returned from getJSON will be reject with this error handling, and we will be able to handle the error in model.js, where we want it. We propagated error from one async funciton to another by re-throwing it here in this catch block
   }
 };
-
 
 // headers are snippets of text that have informations about request itself
 // application/json - we specify in the request that the data we're gonna send will be in json format, so api can correctly accept taht data and create new recipe in data base
