@@ -165,11 +165,11 @@ const clearBookmarks = function () {
 };
 // clearBookmarks();
 
-export const deleteRecipe = async function (id) {
-  try {
-    const data = await AJAX(`${API_URL}`, undefined, 'DELETE');
-    return data;
-  } catch (err) {
-    throw err;
-  }
-};
+// export const deleteRecipe = async function (id) {
+//   try {
+//     const data = await AJAX(`${API_URL}`, undefined, 'DELETE');
+//     return data;
+//   } catch (err) {
+//     throw err;
+//   }
+// };
