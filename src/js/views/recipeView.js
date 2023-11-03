@@ -28,9 +28,11 @@ class RecipeView extends View {
   addHandlerDeleteRecipe(handler) {
     this._parentElement.addEventListener('click', function (e) {
       const btn = e.target.closest('.button--delete');
-      const recipeId = btn.dataset.recipeId;
+      const { recipeId } = btn.dataset;
       if (!btn) return;
-      handler();
+      console.log(btn);
+      console.log(recipeId);
+      handler(+recipeId);
     });
   }
 

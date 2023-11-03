@@ -128,18 +128,18 @@ const controlAddRecipe = async function (newRecipe) {
 
 const controlDeleteRecipe = async function (id) {
   console.log('delete me');
-  // try {
-  //   if (!id) throw new Error('Invalid recipe ID');
+  try {
+    if (!id) throw new Error('Invalid recipe ID');
 
-  //   await model.deleteRecipe(recipeId);
-  //   // Remove recipe from state
-  //   state.recipes = state.recipes.filter(recipe => recipe.id !== id);
+    await model.deleteRecipe(recipeId);
+    // Remove recipe from state
+    state.recipes = state.recipes.filter(recipe => recipe.id !== id);
 
-  //   // Update the view
-  //   recipeView.render(state.recipes);
-  // } catch (err) {
-  //   console.error('Error deleting recipe', err);
-  // }
+    // Update the view
+    recipeView.render(state.recipes);
+  } catch (err) {
+    console.error('Error deleting recipe', err);
+  }
 };
 
 const init = function () {

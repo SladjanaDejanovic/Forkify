@@ -700,16 +700,16 @@ const controlAddRecipe = async function(newRecipe) {
 };
 const controlDeleteRecipe = async function(id) {
     console.log("delete me");
-// try {
-//   if (!id) throw new Error('Invalid recipe ID');
-//   await model.deleteRecipe(recipeId);
-//   // Remove recipe from state
-//   state.recipes = state.recipes.filter(recipe => recipe.id !== id);
-//   // Update the view
-//   recipeView.render(state.recipes);
-// } catch (err) {
-//   console.error('Error deleting recipe', err);
-// }
+    try {
+        if (!id) throw new Error("Invalid recipe ID");
+        await _modelJs.deleteRecipe(recipeId);
+        // Remove recipe from state
+        state.recipes = state.recipes.filter((recipe)=>recipe.id !== id);
+        // Update the view
+        (0, _recipeViewJsDefault.default).render(state.recipes);
+    } catch (err) {
+        console.error("Error deleting recipe", err);
+    }
 };
 const init = function() {
     (0, _bookmarksViewJsDefault.default).addHandlerRender(controlBookmarks);
@@ -1979,7 +1979,6 @@ parcelHelpers.export(exports, "updateServings", ()=>updateServings);
 parcelHelpers.export(exports, "addBookmark", ()=>addBookmark);
 parcelHelpers.export(exports, "deleteBookmark", ()=>deleteBookmark);
 parcelHelpers.export(exports, "uploadRecipe", ()=>uploadRecipe);
-parcelHelpers.export(exports, "deleteRecipe", ()=>deleteRecipe);
 var _regeneratorRuntime = require("regenerator-runtime");
 var _configJs = require("./config.js");
 var _helpersJs = require("./helpers.js");
@@ -2116,15 +2115,15 @@ init();
 //only while developing (remove init() when clearing bookmarks)
 const clearBookmarks = function() {
     localStorage.clear("bookmarks");
-};
-const deleteRecipe = async function(id) {
-    try {
-        const data = await (0, _helpersJs.AJAX)(`${(0, _configJs.API_URL)}`, undefined, "DELETE");
-        return data;
-    } catch (err) {
-        throw err;
-    }
-};
+}; // clearBookmarks();
+ // export const deleteRecipe = async function (id) {
+ //   try {
+ //     const data = await AJAX(`${API_URL}`, undefined, 'DELETE');
+ //     return data;
+ //   } catch (err) {
+ //     throw err;
+ //   }
+ // };
 
 },{"regenerator-runtime":"dXNgZ","./config.js":"k5Hzs","./helpers.js":"hGI1E","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"dXNgZ":[function(require,module,exports) {
 /**
@@ -2826,9 +2825,11 @@ class RecipeView extends (0, _viewDefault.default) {
     addHandlerDeleteRecipe(handler) {
         this._parentElement.addEventListener("click", function(e) {
             const btn = e.target.closest(".button--delete");
-            const recipeId = btn.dataset.recipeId;
+            const { recipeId } = btn.dataset;
             if (!btn) return;
-            handler();
+            console.log(btn);
+            console.log(recipeId);
+            handler(+recipeId);
         });
     }
     _generateMarkup() {
