@@ -165,18 +165,3 @@ Subscribe to the publisher by passing into subscriber function as an argument. T
 // add readme
 
 // code that we manualy deployed before to netlify is in dist folder, but since a practice is to add dist folder to git ignore, dist is not in repository then. but we tell netlify to run build commant whenever there is a change in repository (copying build command from package.json and pasting under build command)
-
-/*  // 
-add delete recipe feature
-delete only recipe added by user - recipe with key
-on recipes added by user there will be a button for delete (add eventlistener)
-in controller make func controlDeleteRecipe
-addHandlerDeleteRecipe
-
-
-make func to get recipe and delete that recipe with api key
-try code bellow
-const data = await AJAX(
-  `${API_URL}?search=${recipe.title}&key=${KEY}`
-);
-*/
