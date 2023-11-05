@@ -126,6 +126,7 @@ const controlAddRecipe = async function (newRecipe) {
   }
 };
 
+// Delete recipe added by user
 const controlDeleteRecipe = async function (id) {
   console.log('delete me');
   try {
