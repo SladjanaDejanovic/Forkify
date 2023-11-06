@@ -31,8 +31,8 @@ class RecipeView extends View {
       const { recipeId } = btn.dataset;
       if (!btn) return;
       console.log(btn);
-      console.log(recipeId);
-      handler(+recipeId);
+      console.log();
+      handler(recipeId);
     });
   }
 

@@ -130,9 +130,10 @@ const controlAddRecipe = async function (newRecipe) {
 const controlDeleteRecipe = async function (id) {
   console.log('delete me');
   try {
-    if (!id) throw new Error('Invalid recipe ID');
+    // if (!id) throw new Error('Invalid recipe ID');
 
-    await model.deleteRecipe(recipeId);
+    if (recipe.id === id) await model.deleteRecipe(model.state.recipe);
+
     // Remove recipe from state
     state.recipes = state.recipes.filter(recipe => recipe.id !== id);
 

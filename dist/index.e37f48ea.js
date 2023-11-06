@@ -582,20 +582,6 @@ So in the publisher-Subscriber pattern we have a publisher which is some code th
 Subscribe to the publisher by passing into subscriber function as an argument. That means that as soon as the program loads, the init function is called which in turn immediately calls the addHandlerRender function from the view (bc the controller imports both view and model). As we call addHendlerRender, we pass in our controlRecipes function as an argument, subscribing controlRecipes to addHandlerRender. Now addHandlerRender listens for events using the addEventListener method as always, and then as soon as the event actually happens, the controlRecipes function will be called as the callback function of addEventListener (as soon as the publisher publishes an event the subscriber will get called)
 */  // add readme
  // code that we manualy deployed before to netlify is in dist folder, but since a practice is to add dist folder to git ignore, dist is not in repository then. but we tell netlify to run build commant whenever there is a change in repository (copying build command from package.json and pasting under build command)
- /*  // 
-add delete recipe feature
-delete only recipe added by user - recipe with key
-on recipes added by user there will be a button for delete (add eventlistener)
-in controller make func controlDeleteRecipe
-addHandlerDeleteRecipe
-
-
-make func to get recipe and delete that recipe with api key
-try code bellow
-const data = await AJAX(
-  `${API_URL}?search=${recipe.title}&key=${KEY}`
-);
-*/ 
 var _modelJs = require("./model.js");
 var _configJs = require("./config.js");
 var _recipeViewJs = require("./views/recipeView.js");
@@ -698,13 +684,14 @@ const controlAddRecipe = async function(newRecipe) {
         (0, _addRecipeViewJsDefault.default).renderError(err.message);
     }
 };
+// Delete recipe added by user
 const controlDeleteRecipe = async function(id) {
     console.log("delete me");
     try {
-        if (!id) throw new Error("Invalid recipe ID");
-        await _modelJs.deleteRecipe(recipeId);
+        // if (!id) throw new Error('Invalid recipe ID');
+        if (recipe.id === id) await _modelJs.deleteRecipe(_modelJs.state.recipe);
         // Remove recipe from state
-        state.recipes = state.recipes.filter((recipe)=>recipe.id !== id);
+        state.recipes = state.recipes.filter((recipe1)=>recipe1.id !== id);
         // Update the view
         (0, _recipeViewJsDefault.default).render(state.recipes);
     } catch (err) {
@@ -1979,6 +1966,7 @@ parcelHelpers.export(exports, "updateServings", ()=>updateServings);
 parcelHelpers.export(exports, "addBookmark", ()=>addBookmark);
 parcelHelpers.export(exports, "deleteBookmark", ()=>deleteBookmark);
 parcelHelpers.export(exports, "uploadRecipe", ()=>uploadRecipe);
+parcelHelpers.export(exports, "deleteRecipe", ()=>deleteRecipe);
 var _regeneratorRuntime = require("regenerator-runtime");
 var _configJs = require("./config.js");
 var _helpersJs = require("./helpers.js");
@@ -2115,15 +2103,15 @@ init();
 //only while developing (remove init() when clearing bookmarks)
 const clearBookmarks = function() {
     localStorage.clear("bookmarks");
-}; // clearBookmarks();
- // export const deleteRecipe = async function (id) {
- //   try {
- //     const data = await AJAX(`${API_URL}`, undefined, 'DELETE');
- //     return data;
- //   } catch (err) {
- //     throw err;
- //   }
- // };
+};
+const deleteRecipe = async function(id) {
+    try {
+        const data = await (0, _helpersJs.AJAX)(`${(0, _configJs.API_URL)}`, undefined, "DELETE");
+        return data;
+    } catch (err) {
+        throw err;
+    }
+};
 
 },{"regenerator-runtime":"dXNgZ","./config.js":"k5Hzs","./helpers.js":"hGI1E","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"dXNgZ":[function(require,module,exports) {
 /**
@@ -2828,8 +2816,8 @@ class RecipeView extends (0, _viewDefault.default) {
             const { recipeId } = btn.dataset;
             if (!btn) return;
             console.log(btn);
-            console.log(recipeId);
-            handler(+recipeId);
+            console.log();
+            handler(recipeId);
         });
     }
     _generateMarkup() {
