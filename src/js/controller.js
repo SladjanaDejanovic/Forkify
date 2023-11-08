@@ -125,7 +125,7 @@ const controlAddRecipe = async function (newRecipe) {
     addRecipeView.renderError(err.message);
   }
 };
-
+/*
 // Delete recipe added by user
 const controlDeleteRecipe = async function (id) {
   console.log('delete me');
@@ -142,7 +142,7 @@ const controlDeleteRecipe = async function (id) {
   } catch (err) {
     console.error('Error deleting recipe', err);
   }
-};
+};*/
 
 const init = function () {
   bookmarksView.addHandlerRender(controlBookmarks);
