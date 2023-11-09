@@ -688,12 +688,16 @@ const controlAddRecipe = async function(newRecipe) {
 const controlDeleteRecipe = async function(id) {
     console.log("delete me");
     try {
-        // if (!id) throw new Error('Invalid recipe ID');
-        if (recipe.id === id) await _modelJs.deleteRecipe(_modelJs.state.recipe);
+        if (!id) throw new Error("Invalid recipe ID");
+        await _modelJs.deleteRecipe(id, (0, _configJs.KEY));
         // Remove recipe from state
-        state.recipes = state.recipes.filter((recipe1)=>recipe1.id !== id);
+        state.recipes = state.recipes.filter((recipe)=>recipe.id !== id);
         // Update the view
-        (0, _recipeViewJsDefault.default).render(state.recipes);
+        // recipeView.render(state.recipes);
+        // Update bookmark view
+        // bookmarksView.render(model.state.bookmarks);
+        // Show success message
+        (0, _recipeViewJsDefault.default).renderMessage("Recipe was successfully deleted!");
     } catch (err) {
         console.error("Error deleting recipe", err);
     }
@@ -2087,7 +2091,7 @@ const uploadRecipe = async function(newRecipe) {
             servings: +newRecipe.servings,
             ingredients
         };
-        const data = await (0, _helpersJs.AJAX)(`${(0, _configJs.API_URL)}?search=${recipe.title}&key=${(0, _configJs.KEY)}`, recipe);
+        const data = await (0, _helpersJs.AJAX)(`${(0, _configJs.API_URL)}?search=${recipe.title}&key=${(0, _configJs.KEY)}`, recipe, "POST");
         state.recipe = createRecipeObject(data);
         addBookmark(state.recipe);
     // console.log(recipe);
@@ -2104,10 +2108,13 @@ init();
 const clearBookmarks = function() {
     localStorage.clear("bookmarks");
 };
-const deleteRecipe = async function(id) {
+const deleteRecipe = async function(id, KEY) {
     try {
-        const data = await (0, _helpersJs.AJAX)(`${(0, _configJs.API_URL)}`, undefined, "DELETE");
-        return data;
+        const data = await (0, _helpersJs.AJAX)(`${(0, _configJs.API_URL)}/${id}?key=${KEY}`, undefined, "DELETE");
+        if (data) return data;
+        else return {
+            message: "Recipe deleted successfully"
+        };
     } catch (err) {
         throw err;
     }

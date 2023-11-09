@@ -142,7 +142,8 @@ export const uploadRecipe = async function (newRecipe) {
 
     const data = await AJAX(
       `${API_URL}?search=${recipe.title}&key=${KEY}`,
-      recipe
+      recipe,
+      'POST'
     );
 
     state.recipe = createRecipeObject(data);
@@ -165,10 +166,14 @@ const clearBookmarks = function () {
 };
 // clearBookmarks();
 
-export const deleteRecipe = async function (id) {
+export const deleteRecipe = async function (id, KEY) {
   try {
-    const data = await AJAX(`${API_URL}`, undefined, 'DELETE');
-    return data;
+    const data = await AJAX(`${API_URL}/${id}?key=${KEY}`, undefined, 'DELETE');
+    if (data) {
+      return data;
+    } else {
+      return { message: 'Recipe deleted successfully' };
+    }
   } catch (err) {
     throw err;
   }

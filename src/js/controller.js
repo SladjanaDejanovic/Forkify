@@ -1,5 +1,5 @@
 import * as model from './model.js';
-import { MODAL_CLOSE_SEC } from './config.js';
+import { KEY, MODAL_CLOSE_SEC } from './config.js';
 import recipeView from './views/recipeView.js';
 import searchView from './views/searchView.js';
 import resultsView from './views/resultsView.js';
@@ -125,24 +125,30 @@ const controlAddRecipe = async function (newRecipe) {
     addRecipeView.renderError(err.message);
   }
 };
-/*
+
 // Delete recipe added by user
 const controlDeleteRecipe = async function (id) {
   console.log('delete me');
   try {
-    // if (!id) throw new Error('Invalid recipe ID');
+    if (!id) throw new Error('Invalid recipe ID');
 
-    if (recipe.id === id) await model.deleteRecipe(model.state.recipe);
+    await model.deleteRecipe(id, KEY);
 
     // Remove recipe from state
     state.recipes = state.recipes.filter(recipe => recipe.id !== id);
 
     // Update the view
-    recipeView.render(state.recipes);
+    // recipeView.render(state.recipes);
+
+    // Update bookmark view
+    // bookmarksView.render(model.state.bookmarks);
+
+    // Show success message
+    recipeView.renderMessage('Recipe was successfully deleted!');
   } catch (err) {
     console.error('Error deleting recipe', err);
   }
-};*/
+};
 
 const init = function () {
   bookmarksView.addHandlerRender(controlBookmarks);
