@@ -144,7 +144,7 @@ const controlDeleteRecipe = async function (id) {
     bookmarksView.render(model.state.bookmarks);
 
     // Show success message
-    recipeView.renderMessage('Recipe was successfully deleted!');
+    // recipeView.renderMessage('Recipe was successfully deleted!');
   } catch (err) {
     console.error('Error deleting recipe', err);
   }
