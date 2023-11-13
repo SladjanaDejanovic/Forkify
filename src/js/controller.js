@@ -135,7 +135,7 @@ const controlDeleteRecipe = async function (id) {
     await model.deleteRecipe(id, KEY);
 
     // Remove recipe from state
-    state.recipes = state.recipes.filter(recipe => recipe.id !== id);
+    // state.recipes = state.recipes.filter(recipe => recipe.id !== id);
 
     // Update the view
     // recipeView.render(state.recipes);
