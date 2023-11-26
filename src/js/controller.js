@@ -127,35 +127,36 @@ const controlAddRecipe = async function (newRecipe) {
 };
 
 // Delete recipe added by user
-// const controlDeleteRecipe = async function (id) {
-//   console.log('delete me');
-//   try {
-//     if (!id) throw new Error('Invalid recipe ID');
+const controlDeleteRecipe = async function (id) {
+  console.log('delete me');
+  try {
+    if (!id) throw new Error('Invalid recipe ID');
 
-//     await model.deleteRecipe(id, KEY);
+    await model.deleteRecipe(id, KEY);
 
-//     // Remove recipe from state
-//     // state.recipes = state.recipes.filter(recipe => recipe.id !== id);
+    // Remove recipe from state
+    state.recipes = state.recipes.filter(recipe => recipe.id !== id);
 
-//     // Update the view
-//     // recipeView.render(state.recipes);
+    // Update the view
+    recipeView.render(state.recipes);
 
-//     // Update bookmark view
-//     // bookmarksView.render(model.state.bookmarks);
+    // Update bookmark view
+    // model.deleteBookmark(state.recipe);
+    // bookmarksView.render(model.state.bookmarks);
 
-//     // Show success message
-//     // recipeView.renderMessage('Recipe was successfully deleted!');
-//   } catch (err) {
-//     console.error('Error deleting recipe', err);
-//   }
-// };
+    // Show success message
+    recipeView.renderMessage('Recipe was successfully deleted!');
+  } catch (err) {
+    console.error('Error deleting recipe', err);
+  }
+};
 
 const init = function () {
   bookmarksView.addHandlerRender(controlBookmarks);
   recipeView.addHandlerRender(controlRecipes);
   recipeView.addHandlerUpdateServings(controlServings);
   recipeView.addHandlerAddBookmark(controlAddBookmark);
-  // recipeView.addHandlerDeleteRecipe(controlDeleteRecipe);
+  recipeView.addHandlerDeleteRecipe(controlDeleteRecipe);
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(controlPagintaion);
   addRecipeView.addHandlerUpload(controlAddRecipe);

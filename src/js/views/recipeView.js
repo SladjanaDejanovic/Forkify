@@ -25,16 +25,15 @@ class RecipeView extends View {
     });
   }
 
-  //  addHandlerDeleteRecipe(handler) {
-  //     this._parentElement.addEventListener('click', function (e) {
-  //       const btn = e.target.closest('.button--delete');
-  //       const { recipeId } = btn.dataset;
-  //       if (!btn) return;
-  //       console.log(btn);
-  //       console.log();
-  //       handler(recipeId);
-  //     });
-  //   }
+  addHandlerDeleteRecipe(handler) {
+    this._parentElement.addEventListener('click', function (e) {
+      const btn = e.target.closest('.button--delete');
+      const { recipeId } = btn.dataset;
+      if (!btn) return;
+
+      handler(recipeId);
+    });
+  }
 
   _generateMarkup() {
     return `

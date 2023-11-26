@@ -693,8 +693,9 @@ const controlDeleteRecipe = async function(id) {
         // Remove recipe from state
         state.recipes = state.recipes.filter((recipe)=>recipe.id !== id);
         // Update the view
-        // recipeView.render(state.recipes);
+        (0, _recipeViewJsDefault.default).render(state.recipes);
         // Update bookmark view
+        // model.deleteBookmark(state.recipe);
         // bookmarksView.render(model.state.bookmarks);
         // Show success message
         (0, _recipeViewJsDefault.default).renderMessage("Recipe was successfully deleted!");
@@ -2822,8 +2823,6 @@ class RecipeView extends (0, _viewDefault.default) {
             const btn = e.target.closest(".button--delete");
             const { recipeId } = btn.dataset;
             if (!btn) return;
-            console.log(btn);
-            console.log();
             handler(recipeId);
         });
     }
