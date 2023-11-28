@@ -138,7 +138,7 @@ const controlDeleteRecipe = async function (id) {
     state.recipes = state.recipes.filter(recipe => recipe.id !== id);
 
     // Update the view
-    recipeView.render(state.recipes);
+    // recipeView.render(state.recipes);
 
     // Update bookmark view
     // model.deleteBookmark(state.recipe);
