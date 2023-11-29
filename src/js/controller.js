@@ -128,7 +128,7 @@ const controlAddRecipe = async function (newRecipe) {
 
 // Delete recipe added by user
 const controlDeleteRecipe = async function (id) {
-  console.log('delete me');
+  // console.log('delete me');
   try {
     if (!id) throw new Error('Invalid recipe ID');
 
