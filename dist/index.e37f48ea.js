@@ -686,19 +686,22 @@ const controlAddRecipe = async function(newRecipe) {
 };
 // Delete recipe added by user
 const controlDeleteRecipe = async function(id) {
-    console.log("delete me");
+    console.log("Deleting recipe with ID:", id);
     try {
         if (!id) throw new Error("Invalid recipe ID");
         await _modelJs.deleteRecipe(id, (0, _configJs.KEY));
         // Remove recipe from state
         state.recipes = state.recipes.filter((recipe)=>recipe.id !== id);
         // Update the view
-        (0, _recipeViewJsDefault.default).render(state.recipes);
+        // recipeView.render(state.recipes);
         // Update bookmark view
         // model.deleteBookmark(state.recipe);
-        // bookmarksView.render(model.state.bookmarks);
-        // Show success message
-        (0, _recipeViewJsDefault.default).renderMessage("Recipe was successfully deleted!");
+        (0, _bookmarksViewJsDefault.default).render(_modelJs.state.bookmarks);
+        // Change ID in url
+        window.history.replaceState(null, "", window.location.pathname);
+        console.log("URL Updated:", window.location.href);
+    // Show success message
+    // recipeView.renderMessage('Recipe was successfully deleted!');
     } catch (err) {
         console.error("Error deleting recipe", err);
     }
@@ -707,8 +710,8 @@ const init = function() {
     (0, _bookmarksViewJsDefault.default).addHandlerRender(controlBookmarks);
     (0, _recipeViewJsDefault.default).addHandlerRender(controlRecipes);
     (0, _recipeViewJsDefault.default).addHandlerUpdateServings(controlServings);
-    (0, _recipeViewJsDefault.default).addHandlerAddBookmark(controlAddBookmark);
     (0, _recipeViewJsDefault.default).addHandlerDeleteRecipe(controlDeleteRecipe);
+    (0, _recipeViewJsDefault.default).addHandlerAddBookmark(controlAddBookmark);
     (0, _searchViewJsDefault.default).addHandlerSearch(controlSearchResults);
     (0, _paginationViewJsDefault.default).addHandlerClick(controlPagintaion);
     (0, _addRecipeViewJsDefault.default).addHandlerUpload(controlAddRecipe);
@@ -2064,8 +2067,9 @@ const addBookmark = function(recipe) {
 };
 const deleteBookmark = function(id) {
     // Remove bookmark
-    const index = state.bookmarks.findIndex((el)=>el.id === id);
-    state.bookmarks.splice(index, 1);
+    // const index = state.bookmarks.findIndex(el => el.id === id);
+    // state.bookmarks.splice(index, 1);
+    state.bookmarks = state.bookmarks.filter((bookmark)=>bookmark.id !== id);
     // Mark current recipe as NOT bookmarked
     if (id === state.recipe.id) state.recipe.bookmarked = false;
     persistBookmarks();
@@ -2112,8 +2116,11 @@ const clearBookmarks = function() {
 const deleteRecipe = async function(id, KEY) {
     try {
         const data = await (0, _helpersJs.AJAX)(`${(0, _configJs.API_URL)}/${id}?key=${KEY}`, undefined, "DELETE");
-        if (data) return data;
-        else return {
+        if (data) {
+            deleteBookmark(id);
+            state.recipe = {};
+            return data;
+        } else return {
             message: "Recipe deleted successfully"
         };
     } catch (err) {
@@ -2780,6 +2787,10 @@ const AJAX = async function(url, uploadData, method = "GET") {
             fetchPro,
             timeout((0, _configJs.TIMEOUT_SEC))
         ]);
+        if (method === "DELETE") {
+            if (!res.ok) throw new Error("Error deleting resource (${res.status})");
+            return;
+        }
         const data = await res.json();
         if (!res.ok) throw new Error(`${data.message} (${res.status})`);
         return data;
@@ -2823,11 +2834,14 @@ class RecipeView extends (0, _viewDefault.default) {
             const btn = e.target.closest(".button--delete");
             const { recipeId } = btn.dataset;
             if (!btn) return;
+            console.log(btn);
+            console.log(recipeId);
             handler(recipeId);
         });
     }
     _generateMarkup() {
         return `
+    ${this._data.message ? this._generateMessage() : ""}
     <figure class="recipe__fig">
           <img src="${this._data.image}" alt="${this._data.title}" class="recipe__img" />
           <h1 class="recipe__title">
@@ -2921,6 +2935,17 @@ class RecipeView extends (0, _viewDefault.default) {
       </div>
     </li>
     `;
+    }
+    _generateMessage() {
+        return `
+    <div class="message">
+      <div>
+        <svg>
+          <use href="${0, _iconsSvgDefault.default}#icon-smile"></use>
+        </svg>
+      </div>
+      <p>${this._data.message}</p>
+    </div>`;
     }
 }
 exports.default = new RecipeView();

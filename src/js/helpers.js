@@ -32,6 +32,11 @@ export const AJAX = async function (
         });
 
     const res = await Promise.race([fetchPro, timeout(TIMEOUT_SEC)]);
+
+    if (method === 'DELETE') {
+      if (!res.ok) throw new Error('Error deleting resource (${res.status})');
+      return;
+    }
     const data = await res.json();
 
     if (!res.ok) throw new Error(`${data.message} (${res.status})`);

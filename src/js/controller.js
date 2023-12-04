@@ -128,7 +128,8 @@ const controlAddRecipe = async function (newRecipe) {
 
 // Delete recipe added by user
 const controlDeleteRecipe = async function (id) {
-  // console.log('delete me');
+  console.log('Deleting recipe with ID:', id);
+
   try {
     if (!id) throw new Error('Invalid recipe ID');
 
@@ -142,7 +143,11 @@ const controlDeleteRecipe = async function (id) {
 
     // Update bookmark view
     // model.deleteBookmark(state.recipe);
-    // bookmarksView.render(model.state.bookmarks);
+    bookmarksView.render(model.state.bookmarks);
+
+    // Change ID in url
+    window.history.replaceState(null, '', window.location.pathname);
+    console.log('URL Updated:', window.location.href);
 
     // Show success message
     // recipeView.renderMessage('Recipe was successfully deleted!');
@@ -155,8 +160,8 @@ const init = function () {
   bookmarksView.addHandlerRender(controlBookmarks);
   recipeView.addHandlerRender(controlRecipes);
   recipeView.addHandlerUpdateServings(controlServings);
-  recipeView.addHandlerAddBookmark(controlAddBookmark);
   recipeView.addHandlerDeleteRecipe(controlDeleteRecipe);
+  recipeView.addHandlerAddBookmark(controlAddBookmark);
   searchView.addHandlerSearch(controlSearchResults);
   paginationView.addHandlerClick(controlPagintaion);
   addRecipeView.addHandlerUpload(controlAddRecipe);

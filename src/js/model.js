@@ -106,8 +106,9 @@ export const addBookmark = function (recipe) {
 
 export const deleteBookmark = function (id) {
   // Remove bookmark
-  const index = state.bookmarks.findIndex(el => el.id === id);
-  state.bookmarks.splice(index, 1);
+  // const index = state.bookmarks.findIndex(el => el.id === id);
+  // state.bookmarks.splice(index, 1);
+  state.bookmarks = state.bookmarks.filter(bookmark => bookmark.id !== id);
 
   // Mark current recipe as NOT bookmarked
   if (id === state.recipe.id) state.recipe.bookmarked = false;
@@ -170,6 +171,8 @@ export const deleteRecipe = async function (id, KEY) {
   try {
     const data = await AJAX(`${API_URL}/${id}?key=${KEY}`, undefined, 'DELETE');
     if (data) {
+      deleteBookmark(id);
+      state.recipe = {};
       return data;
     } else {
       return { message: 'Recipe deleted successfully' };

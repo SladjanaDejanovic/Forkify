@@ -30,6 +30,8 @@ class RecipeView extends View {
       const btn = e.target.closest('.button--delete');
       const { recipeId } = btn.dataset;
       if (!btn) return;
+      console.log(btn);
+      console.log(recipeId);
 
       handler(recipeId);
     });
@@ -37,6 +39,7 @@ class RecipeView extends View {
 
   _generateMarkup() {
     return `
+    ${this._data.message ? this._generateMessage() : ''}
     <figure class="recipe__fig">
           <img src="${this._data.image}" alt="${
       this._data.title
@@ -149,6 +152,18 @@ class RecipeView extends View {
       </div>
     </li>
     `;
+  }
+
+  _generateMessage() {
+    return `
+    <div class="message">
+      <div>
+        <svg>
+          <use href="${icons}#icon-smile"></use>
+        </svg>
+      </div>
+      <p>${this._data.message}</p>
+    </div>`;
   }
 }
 
