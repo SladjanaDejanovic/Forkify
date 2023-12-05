@@ -171,7 +171,7 @@ export const deleteRecipe = async function (id, KEY) {
   try {
     const data = await AJAX(`${API_URL}/${id}?key=${KEY}`, undefined, 'DELETE');
     if (data) {
-      deleteBookmark(id);
+      deleteBookmark(state.recipe);
       state.recipe = {};
       return data;
     } else {

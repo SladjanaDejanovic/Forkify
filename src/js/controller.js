@@ -132,20 +132,20 @@ const controlDeleteRecipe = async function (id) {
 
   try {
     if (!id) throw new Error('Invalid recipe ID');
-
-    await model.deleteRecipe(id, KEY);
+    if (model.state.recipe.id === id)
+      // await model.deleteRecipe(model.state.recipe.id);
+      await model.deleteRecipe(id, KEY);
 
     // Remove recipe from state
-    state.recipes = state.recipes.filter(recipe => recipe.id !== id);
+    // model.state.recipe = model.state.recipe.filter(recipe => recipe.id !== id);
 
     // Update the view
-    // recipeView.render(state.recipes);
 
     // Update bookmark view
     // model.deleteBookmark(state.recipe);
     bookmarksView.render(model.state.bookmarks);
 
-    // Change ID in url
+    // Delete id from url
     window.history.replaceState(null, '', window.location.pathname);
     console.log('URL Updated:', window.location.href);
 
