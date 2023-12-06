@@ -139,8 +139,6 @@ const controlDeleteRecipe = async function (id) {
     // Remove recipe from state
     // model.state.recipe = model.state.recipe.filter(recipe => recipe.id !== id);
 
-    // Update the view
-
     // Update bookmark view
     // model.deleteBookmark(state.recipe);
     bookmarksView.render(model.state.bookmarks);
@@ -150,7 +148,6 @@ const controlDeleteRecipe = async function (id) {
     console.log('URL Updated:', window.location.href);
 
     // Show success message
-    // recipeView.renderMessage('Recipe was successfully deleted!');
   } catch (err) {
     console.error('Error deleting recipe', err);
   }
