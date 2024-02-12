@@ -18,7 +18,7 @@ class RecipeView extends View {
 
   addHandlerAddBookmark(handler) {
     this._parentElement.addEventListener('click', function (e) {
-      // event delegation is good for adding events on elements that don't exist yet when the page loads for the first time
+      // event delegation - good for adding events on elements that don't exist yet when the page loads for the first time
       const btn = e.target.closest('.btn--bookmark');
       if (!btn) return;
       handler();
